@@ -1,4 +1,4 @@
-import DataLoader = require('dataloader');
+import DataLoader from 'dataloader';
 import { In, Repository, ObjectLiteral } from 'typeorm';
 
 /**

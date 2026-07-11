@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import graphqlFields = require('graphql-fields');
+import graphqlFields from 'graphql-fields';
 
 /**
  * Parses the GraphQL info object to extract requested fields.
