@@ -7,8 +7,8 @@ import { validateEnv } from './config/database.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './context/identity/users/users.module';
+import { AuthModule } from './context/identity/auth/auth.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -31,7 +31,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: true, // Automatically sync DB schema for rapid hackathon dev
+        synchronize: true, 
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({

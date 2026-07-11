@@ -1,9 +1,9 @@
 import { Resolver, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { User } from './entities/user.entity';
-import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../../infrastructure/database/models/user.entity';
+import { UsersService } from '../../application/services/users.service';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
+import { CurrentUser } from '../../../auth/infrastructure/decorators/current-user.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {
