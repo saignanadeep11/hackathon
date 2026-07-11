@@ -7,15 +7,13 @@ import { validateEnv } from './config/database.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
-import { UsersModule } from './context/identity/users/users.module';
-import { AuthModule } from './context/identity/auth/auth.module';
+import { IdentityModule } from './context/identity/identity.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
-    AuthModule,
-    UsersModule,
+    IdentityModule,
     ConfigModule.forRoot({
       validate: validateEnv,
       isGlobal: true,

@@ -7,7 +7,7 @@ import { Notify } from 'quasar';
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: process.env.GRAPHQL_URI || 'http://localhost:3000/graphql',
+  uri: import.meta.env.VITE_GRAPHQL_ENDPOINT || 'http://localhost:3000/graphql',
 });
 
 // Global Error Handling Link
