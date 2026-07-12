@@ -5,8 +5,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { v7 as uuidv7 } from 'uuid';
+import { GeneralStatus, UserRole } from '../../../../../../common/enums/database.enums';
+import { Department } from '../../../../departments/infrastructure/database/models/department.entity';
 
 @ObjectType()
 @Entity('users')
@@ -16,24 +20,33 @@ export class User {
   id: string = uuidv7();
 
   @Field()
+  @Column()
+  name: string;
+
+  @Field()
   @Column({ unique: true })
   email: string;
 
   // We explicitly do NOT expose the password field to GraphQL
   @Column()
-  password: string;
+  password_hash: string;
 
-  @Field()
-  @Column()
-  firstName: string;
+  @Field(() => UserRole)
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.EMPLOYEE })
+  role: UserRole;
 
-  @Field()
-  @Column()
-  lastName: string;
+  @Field(() => GeneralStatus)
+  @Column({ type: 'enum', enum: GeneralStatus, default: GeneralStatus.ACTIVE })
+  status: GeneralStatus;
 
-  @Field()
-  @Column({ default: true })
-  isActive: boolean;
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'uuid', nullable: true })
+  department_id: string;
+
+  @Field(() => Department, { nullable: true })
+  @ManyToOne(() => Department, dept => dept.users)
+  @JoinColumn({ name: 'department_id' })
+  department: Department;
 
   @Field()
   @CreateDateColumn()
