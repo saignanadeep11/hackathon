@@ -1,5 +1,6 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
+// Force Vite server restart to detect newly installed ECharts packages
 
 import { configure } from 'quasar/wrappers';
 
