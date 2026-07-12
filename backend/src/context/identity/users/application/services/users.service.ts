@@ -14,7 +14,13 @@ export class UsersService {
     return this.usersRepository.findByEmail(email);
   }
 
+  async findAllUsers(): Promise<User[]> {
+    return this.usersRepository.findAllUsers();
+  }
+
+
   async create(user: Partial<User>): Promise<User> {
     return this.usersRepository.createOne(user);
   }
 }
+

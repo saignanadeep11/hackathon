@@ -17,7 +17,8 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', redirect: '/dashboard' },
       { path: 'dashboard', component: () => import('src/features/dashboard/ui/DashboardPage.vue') },
-      { path: 'assets', component: () => import('src/features/assets/ui/AssetDirectory.vue') }
+      { path: 'assets', component: () => import('src/features/assets/ui/AssetDirectory.vue') },
+      { path: 'audits', component: () => import('src/features/auditing/ui/Auditing.vue') }
     ],
   },
 

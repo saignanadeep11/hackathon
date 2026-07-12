@@ -24,4 +24,10 @@ export class UsersRepository extends BaseRepository<User, any, any> {
   async findByEmail(email: string): Promise<User | null> {
     return this.repository.findOne({ where: { email } as any });
   }
+
+  async findAllUsers(): Promise<User[]> {
+    return this.repository.find({ relations: { department: true } });
+  }
 }
+
+
