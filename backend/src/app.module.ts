@@ -28,7 +28,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME'),
-        autoLoadEntities: true,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true, 
       }),
     }),
