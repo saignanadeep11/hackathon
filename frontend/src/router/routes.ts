@@ -33,6 +33,10 @@ const routes: RouteRecordRaw[] = [
         path: 'notifications',
         component: () => import('src/features/notifications/ui/NotificationsPage.vue'),
       },
+      {
+        path: 'maintenance',
+        component: () => import('src/features/maintenance/ui/MaintenancePage.vue'),
+      },
     ],
   },
 

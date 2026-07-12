@@ -70,17 +70,21 @@ Each feature is designed as a **Full-Stack Vertical Slice**. Team members assign
 
 ---
 
-## Phase 4: Maintenance & Auditing
-
-### Task 6: Maintenance Management
+### Task 6: Maintenance Management (Planned)
 - **Description**: Route repair requests through approval workflows.
 - **Backend Tasks**: 
-  - Build `MaintenanceResolver`. 
-  - *Business Logic*: Update the actual Asset's status automatically to `UNDER_MAINTENANCE` upon approval, and back to `AVAILABLE` on resolution.
+  - [ ] **Data Repository**: Build `MaintenanceRepository` for `MaintenanceRequest` entities.
+  - [ ] **Business Logic & Side Effects**: Build `MaintenanceService` implementing:
+    - Status transitions: `PENDING` -> `APPROVED` (sets `Asset.status` to `UNDER_MAINTENANCE`), `IN_PROGRESS` (when technician assigned), `RESOLVED` (sets `Asset.status` to `AVAILABLE`).
+    - Audit Trail: Insert a polymorphic `activity_logs` entry of type `MAINTENANCE` for each transition.
+  - [ ] **GraphQL Resolver**: Create `MaintenanceResolver` with query/mutation guards enforcing role restrictions (Employees create/view their tickets; Managers approve/assign/resolve).
+  - [ ] **Module Integration**: Wire up `MaintenanceModule` with assets and activity logs.
 - **Frontend Tasks**: 
-  - Build `useMaintenance.ts` composable.
-  - Build `Maintenance.vue` (Raise request form, technician assignment grid, priority flags).
-- **Assignee**: ________________________
+  - [ ] **GraphQL Operations**: Write `maintenance.operations.graphql` queries/mutations and run `@graphql-codegen`.
+  - [ ] **Composable API**: Build `useMaintenance.ts` to interface with operations.
+  - [ ] **Glassmorphic UI View**: Create `MaintenancePage.vue` using Quasar `.q-card--glass`, purple semantic branding (`#a855f7` text and 10% translucent background with 6px dot), high-density grids, and conditional manager action buttons.
+  - [ ] **Routing**: Map `/maintenance` in `routes.ts`.
+- **Assignee**: Antigravity AI
 
 ### Task 7: Asset Audit Cycles
 - **Description**: Run structured verification cycles to catch missing/damaged items.

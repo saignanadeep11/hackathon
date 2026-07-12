@@ -10,6 +10,7 @@ import { HealthModule } from './health/health.module';
 import { IdentityModule } from './context/identity/identity.module';
 import { WorkflowsModule } from './context/workflows/workflows.module';
 import { AuditingModule } from './context/auditing/auditing.module';
+import { MaintenanceModule } from './context/workflows/maintenance/maintenance.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -18,6 +19,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     IdentityModule,
     WorkflowsModule,
     AuditingModule,
+    MaintenanceModule,
     ConfigModule.forRoot({
 
       validate: validateEnv,
