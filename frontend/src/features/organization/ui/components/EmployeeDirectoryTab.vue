@@ -29,7 +29,17 @@
             size="sm"
             label="Promote to Dept Head"
             no-caps
+            class="q-mr-sm"
             @click="emit('promote-dept-head', props.row.id)"
+          />
+          <q-btn
+            v-if="props.row.role !== 'ASSET_MANAGER' && props.row.role !== 'ADMIN'"
+            outline
+            color="accent"
+            size="sm"
+            label="Promote to Asset Manager"
+            no-caps
+            @click="emit('promote-asset-manager', props.row.id)"
           />
         </q-td>
       </template>
@@ -54,7 +64,7 @@ const props = defineProps<{
   loading: boolean;
 }>();
 
-const emit = defineEmits(['promote', 'promote-dept-head']);
+const emit = defineEmits(['promote', 'promote-dept-head', 'promote-asset-manager']);
 
 const columns: QTableColumn[] = [
   { name: 'name', label: 'Employee', align: 'left', field: 'name' },

@@ -45,12 +45,19 @@
           @update-status="handleUpdateDepartmentStatus"
           @assign-head="handleAssignHead"
         />
+        <CategoryManagementTab
+          v-if="tab === 'categories'"
+          :categories="categoriesResult?.categories"
+          :loading="categoriesLoading"
+          @edit="handleEditCategory"
+        />
         <EmployeeDirectoryTab
           v-if="tab === 'employee'"
           :users="usersResult?.users"
           :loading="usersLoading"
           @promote="handlePromote"
           @promote-dept-head="handlePromoteDeptHead"
+          @promote-asset-manager="handlePromoteAssetManager"
         />
       </div>
     </div>
@@ -62,6 +69,13 @@
       :loading="createDepartmentLoading"
       @submit="handleCreateDepartment"
     />
+
+    <CategoryModal
+      v-model="isCategoryModalOpen"
+      :category="selectedCategory"
+      :loading="createCategoryLoading || updateCategoryLoading"
+      @submit="handleCategorySubmit"
+    />
   </q-page>
 </template>
 
@@ -70,13 +84,24 @@ import { ref } from 'vue';
 import { useOrganization } from '../api/useOrganization';
 import DeptManagementTab from './components/DeptManagementTab.vue';
 import EmployeeDirectoryTab from './components/EmployeeDirectoryTab.vue';
+import CategoryManagementTab from './components/CategoryManagementTab.vue';
 import CreateDepartmentModal from './components/CreateDepartmentModal.vue';
+import CategoryModal from './components/CategoryModal.vue';
+
+interface Category {
+  id: string;
+  name: string;
+  custom_fields_schema?: unknown;
+}
 
 const tab = ref('departments');
 const isDeptModalOpen = ref(false);
+const isCategoryModalOpen = ref(false);
+const selectedCategory = ref<Category | null>(null);
 
 const tabs = [
   { name: 'departments', label: 'Departments' },
+  { name: 'categories', label: 'Categories' },
   { name: 'employee', label: 'Employee' },
 ];
 
@@ -85,12 +110,19 @@ const {
   departmentsLoading,
   usersResult,
   usersLoading,
+  categoriesResult,
+  categoriesLoading,
   promoteToAdmin,
   promoteToDeptHead,
+  promoteToAssetManager,
   createDepartment,
   createDepartmentLoading,
   updateDepartmentStatus,
   assignDepartmentHead,
+  createCategory,
+  createCategoryLoading,
+  updateCategory,
+  updateCategoryLoading,
 } = useOrganization();
 
 function handlePromote(userId: string) {
@@ -99,6 +131,10 @@ function handlePromote(userId: string) {
 
 function handlePromoteDeptHead(userId: string) {
   void promoteToDeptHead({ id: userId });
+}
+
+function handlePromoteAssetManager(userId: string) {
+  void promoteToAssetManager({ id: userId });
 }
 
 function handleUpdateDepartmentStatus(deptId: string, status: string) {
@@ -110,7 +146,12 @@ function handleAssignHead(deptId: string, headId: string) {
 }
 
 function handleAddClick() {
-  if (tab.value === 'departments') isDeptModalOpen.value = true;
+  if (tab.value === 'departments') {
+    isDeptModalOpen.value = true;
+  } else if (tab.value === 'categories') {
+    selectedCategory.value = null;
+    isCategoryModalOpen.value = true;
+  }
 }
 
 function handleCreateDepartment(input: Record<string, unknown>) {
@@ -119,6 +160,27 @@ function handleCreateDepartment(input: Record<string, unknown>) {
       isDeptModalOpen.value = false;
     })
     .catch((err) => console.error(err));
+}
+
+function handleEditCategory(category: Category) {
+  selectedCategory.value = category;
+  isCategoryModalOpen.value = true;
+}
+
+function handleCategorySubmit(payload: Record<string, unknown>) {
+  if (selectedCategory.value) {
+    updateCategory({ id: selectedCategory.value.id, ...payload })
+      .then(() => {
+        isCategoryModalOpen.value = false;
+      })
+      .catch((err) => console.error(err));
+  } else {
+    createCategory(payload)
+      .then(() => {
+        isCategoryModalOpen.value = false;
+      })
+      .catch((err) => console.error(err));
+  }
 }
 </script>
 
