@@ -50,11 +50,11 @@ export class AssetAllocation {
   requested_by: User;
 
   @Field(() => Date, { nullable: true })
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   expected_return_date: Date;
 
   @Field(() => Date, { nullable: true })
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   return_date: Date;
 
   @Field(() => AllocationStatus)

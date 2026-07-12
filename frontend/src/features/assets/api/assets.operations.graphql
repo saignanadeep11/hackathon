@@ -1,0 +1,37 @@
+query GetAssets($filter: AssetFilterInput) {
+  assets(filter: $filter) {
+    id
+    asset_tag
+    name
+    serial_number
+    acquisition_date
+    acquisition_cost
+    condition
+    location
+    is_shared_bookable
+    status
+    custom_fields_data
+    photo_url
+    createdAt
+    category {
+      id
+      name
+    }
+  }
+}
+
+query GetCategories {
+  categories {
+    id
+    name
+    custom_fields_schema
+  }
+}
+
+mutation RegisterAsset($input: RegisterAssetInput!) {
+  registerAsset(input: $input) {
+    id
+    asset_tag
+    name
+  }
+}

@@ -14,6 +14,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 @Module({
   imports: [
     IdentityModule,
+    
     ConfigModule.forRoot({
       validate: validateEnv,
       isGlobal: true,
@@ -44,3 +45,4 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   providers: [AppService],
 })
 export class AppModule {}
+

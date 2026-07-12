@@ -27,11 +27,11 @@ export class AuditCycle {
   target_department: Department;
 
   @Field(() => Date)
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   start_date: Date;
 
   @Field(() => Date)
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   end_date: Date;
 
   @Field(() => AuditCycleStatus)

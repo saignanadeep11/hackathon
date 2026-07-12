@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
 import { AssetStatus } from '../../../../../../common/enums/database.enums';
@@ -33,7 +33,7 @@ export class Asset {
   category: AssetCategory;
 
   @Field(() => Date)
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   acquisition_date: Date;
 
   @Field(() => Number)
@@ -57,6 +57,15 @@ export class Asset {
   status: AssetStatus;
 
   @Field(() => String)
-  @Column({ type: 'jsonb', default: {} })
-  custom_fields_data: any;
+  @Column({ type: 'text', default: '' })
+  custom_fields_data: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
+  photo_url: string | null;
+
+  @Field(() => Date)
+  @CreateDateColumn()
+  createdAt: Date;
 }
+
