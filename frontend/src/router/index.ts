@@ -8,6 +8,7 @@ import {
 
 import routes from './routes';
 import { useAuthStore } from 'src/stores/auth.store';
+import { ROUTE_PERMISSIONS } from 'src/config/permissions';
 
 /*
  * If not building with SSR mode, you can
@@ -33,14 +34,34 @@ export default route((/* { store, ssrContext } */) => {
     history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE)
   });
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
+    const requiresAuth = to.matched.some(r => r.meta.requiresAuth);
+    const isGuestOnly  = to.matched.some(r => r.meta.guest);
     
-    if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-      next('/login');
-    } else {
-      next();
+    // Redirect logged-in users away from /login
+    if (isGuestOnly && authStore.isLoggedIn) {
+      return next('/dashboard');
     }
+
+    // Redirect unauthenticated users to /login
+    if (requiresAuth && !authStore.isLoggedIn) {
+      return next('/login');
+    }
+
+    // Role-based access: check ROUTE_PERMISSIONS
+    if (authStore.isLoggedIn && authStore.currentRole) {
+      const allowedRoles = ROUTE_PERMISSIONS[to.path];
+      // allowedRoles === undefined means route not listed (allow through)
+      // allowedRoles === [] means all authenticated roles allowed
+      if (allowedRoles !== undefined && allowedRoles.length > 0) {
+        if (!allowedRoles.includes(authStore.currentRole)) {
+          return next('/dashboard'); // Redirect to safe default
+        }
+      }
+    }
+
+    next();
   });
 
   return Router;

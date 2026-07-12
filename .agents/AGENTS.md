@@ -41,3 +41,4 @@ The frontend strictly groups code by feature domain rather than purely by file t
 ## 4. General Guidelines
 - Make small, incremental commits (bit by bit). Avoid massive monolithic commits.
 - Never write placeholder code or "TODOs" unless explicitly requested. Provide fully functional implementations.
+- Use strict TypeScript. Don't use any keywords.

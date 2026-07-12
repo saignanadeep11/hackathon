@@ -12,6 +12,6 @@ export class UsersResolver {
   @UseGuards(JwtAuthGuard)
   @Query(() => User, { name: 'me', nullable: true })
   async getMe(@CurrentUser() user: User): Promise<User | null> {
-    return user;
+    return this.usersService.findById(user.id);
   }
 }

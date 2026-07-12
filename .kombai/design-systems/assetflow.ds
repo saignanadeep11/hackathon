@@ -1,0 +1,94 @@
+---
+name: AssetFlow
+modes: [dark]
+color:
+  palette:
+    primary: "#3b82f6"
+    secondary: "#64748b"
+    accent: "#818cf8"
+    canvas: "#0b1326"
+    surface-container: "#060e20"
+    glass-bg: "rgba(19, 27, 46, 0.6)"
+    glass-border: "rgba(255, 255, 255, 0.1)"
+    success: "#10b981"
+    warning: "#f59e0b"
+    danger: "#ef4444"
+    maintenance: "#a855f7"
+    ink: "#ffffff"
+    ink-slate: "#64748b"
+  semantic:
+    background.canvas: "{color.palette.surface-container}"
+    surface.default: "{color.palette.canvas}"
+    surface.raised: "{color.palette.glass-bg}"
+    text.primary: "{color.palette.ink}"
+    text.secondary: "{color.palette.ink-slate}"
+    text.tertiary: "{color.palette.secondary}"
+    text.link: "{color.palette.primary}"
+    border.default: "{color.palette.glass-border}"
+    border.focus: "{color.palette.primary}"
+    primary.bg: "{color.palette.primary}"
+    primary.fg: "{color.palette.ink}"
+typography:
+  family: { primary: "Plus Jakarta Sans", alt1: "Inter" }
+  textStyle:
+    display: { fontFamily: "Plus Jakarta Sans", fontSize: "36px", fontWeight: 700, lineHeight: 1.2 }
+    h1: { fontFamily: "Plus Jakarta Sans", fontSize: "30px", fontWeight: 600, lineHeight: 1.3 }
+    h2: { fontFamily: "Plus Jakarta Sans", fontSize: "24px", fontWeight: 600, lineHeight: 1.3 }
+    title: { fontFamily: "Plus Jakarta Sans", fontSize: "18px", fontWeight: 500, lineHeight: 1.4 }
+    body: { fontFamily: "Plus Jakarta Sans", fontSize: "14px", fontWeight: 400, lineHeight: 1.5 }
+    small: { fontFamily: "Plus Jakarta Sans", fontSize: "13px", fontWeight: 500, lineHeight: 1.4 }
+    caption: { fontFamily: "Plus Jakarta Sans", fontSize: "12px", fontWeight: 400, lineHeight: 1.4 }
+spacing: { xs: "4px", sm: "8px", md: "16px", lg: "24px", xl: "32px" }
+radius: { sm: "4px", md: "8px", lg: "12px", xl: "24px", pill: "9999px" }
+shadow:
+  md: { dark: "0 8px 32px 0 rgba(0, 0, 0, 0.3)" }
+elevation:
+  - { level: 2, name: "glass-card", shadow: "{shadow.md}", treatment: "12px backdrop blur, 1px glass border" }
+border:
+  width: { hairline: "1px" }
+  style: { solid: "solid" }
+opacity: { disabled: 0.4, muted: 0.7, full: 1 }
+motion:
+  duration: { normal: "200ms" }
+  easing: { standard: "cubic-bezier(0.4, 0, 0.2, 1)" }
+breakpoint:
+  sm: { px: 480, change: "Stacked layout" }
+  md: { px: 768, change: "Adaptive grids" }
+  lg: { px: 1024, change: "Full desktop view" }
+components:
+  glass-card: { type: card, label: "Container", backgroundColor: "{colors.glass-bg}", rounded: "{rounded.lg}", padding: "48px" }
+  primary-button: { type: button, label: "Action", backgroundColor: "{colors.primary}", rounded: "{rounded.md}", padding: "12px 24px" }
+---
+
+# AssetFlow — assetflow.ds
+
+> A high-fidelity enterprise command center system utilizing glassmorphism, deep dark-mode layering, and Plus Jakarta Sans typography.
+
+## Instructions
+- Apply `backdrop-filter: blur(12px)` to all glass surfaces.
+- Use the primary-to-accent gradient for primary CTAs.
+- Maintain a strict 20px Lucide icon size across all functional UI.
+
+## Brand & Accent
+- Action Blue (`{colors.primary}`) for primary interactions.
+- Indigo Glass (`{colors.accent}`) for depth and gradients.
+
+## Surface
+- Surface Container (`{colors.surface-container}`) is the base canvas.
+- Glass Surfaces sit on top with blur and borders.
+
+## Text
+- Plus Jakarta Sans is the single source of truth for typography.
+- Use White at 70% opacity for secondary/ghost links.
+
+## Components
+- `glass-card` — The standard container for modals and sections.
+- `primary-button` — Gradient-filled button with 1.02x hover scale.
+
+## Do
+- Ensure all inputs have a dark inner background and glow on focus.
+- Use rounded-full pill shapes for status badges with a leading glow dot.
+
+## Don't
+- Don't use flat colors for primary buttons; always prefer the depth gradient.
+- Don't exceed 20px for icons unless used as a large brand mark.
