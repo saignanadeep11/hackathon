@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AssetFlow - Organization Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#0b1326",
+                      "primary-fixed": "#d8e2ff",
+                      "surface-dim": "#0b1326",
+                      "surface-container-low": "#131b2e",
+                      "on-error": "#690005",
+                      "secondary-container": "#444173",
+                      "surface-bright": "#31394d",
+                      "on-tertiary-fixed": "#2c0051",
+                      "tertiary-container": "#b76dff",
+                      "on-secondary-fixed": "#181445",
+                      "background": "#0b1326",
+                      "secondary": "#c4c1fb",
+                      "error": "#ffb4ab",
+                      "on-primary": "#002e6a",
+                      "inverse-surface": "#dae2fd",
+                      "on-tertiary-container": "#400071",
+                      "on-background": "#dae2fd",
+                      "on-secondary-container": "#b3afe9",
+                      "outline": "#8c909f",
+                      "on-secondary-fixed-variant": "#444173",
+                      "primary": "#adc6ff",
+                      "on-surface-variant": "#c2c6d6",
+                      "secondary-fixed": "#e3dfff",
+                      "tertiary-fixed": "#f0dbff",
+                      "surface-container-highest": "#2d3449",
+                      "on-surface": "#dae2fd",
+                      "surface-tint": "#adc6ff",
+                      "on-tertiary": "#490080",
+                      "tertiary": "#ddb7ff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-secondary": "#2d2a5b",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-container-lowest": "#060e20",
+                      "on-tertiary-fixed-variant": "#6900b3",
+                      "tertiary-fixed-dim": "#ddb7ff",
+                      "on-primary-container": "#00285d",
+                      "surface-variant": "#2d3449",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#001a42",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#005ac2",
+                      "surface-container-high": "#222a3d",
+                      "surface-container": "#171f33",
+                      "secondary-fixed-dim": "#c4c1fb",
+                      "inverse-on-surface": "#283044",
+                      "outline-variant": "#424754",
+                      "primary-container": "#4d8eff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "max-width": "1440px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg-mobile": ["Plus Jakarta Sans"],
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #0b1326;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(77, 142, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(183, 109, 255, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(45, 52, 73, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(11, 19, 38, 0.4);
+        }
+        
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(68, 65, 115, 0.3) 0%, rgba(45, 52, 73, 0.2) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(216, 226, 255, 0.15);
+            border-left: 1px solid rgba(216, 226, 255, 0.1);
+            box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-input {
+            background: rgba(6, 14, 32, 0.6);
+            border: 1px solid rgba(140, 144, 159, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-input:focus {
+            border-color: #adc6ff;
+            background: rgba(19, 27, 46, 0.8);
+            box-shadow: 0 0 0 2px rgba(173, 198, 255, 0.2);
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #adc6ff;
+            color: #adc6ff;
+            background: linear-gradient(to top, rgba(173, 198, 255, 0.1) 0%, transparent 100%);
+        }
+        
+        .tab-inactive {
+            color: #c2c6d6;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-inactive:hover {
+            color: #dae2fd;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        /* Subtle scrollbar for lists */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(140, 144, 159, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(140, 144, 159, 0.5);
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,46,106,0.2)] py-8 px-4 z-40">
+<!-- Header -->
+<div class="mb-10 px-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-tertiary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-surface-container-lowest" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AssetFlow</h1>
+<p class="text-[10px] text-on-surface-variant tracking-wider uppercase opacity-80 mt-1">Enterprise Resource Mgt</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-md text-label-md">Resources</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="view_kanban">view_kanban</span>
+<span class="font-label-md text-label-md">Maintenance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-md text-label-md">Audits</span>
+</a>
+<!-- Active State for Organization Setup -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary-fixed bg-secondary-container/40 border-l-4 border-primary font-bold scale-[0.98] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="corporate_fare" data-weight="fill" style="font-variation-settings: 'FILL' 1;">corporate_fare</span>
+<span class="font-label-md text-label-md">Organization</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="mt-auto space-y-4 pt-6 border-t border-white/5">
+<button class="w-full py-3 px-4 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold shadow-[0_0_20px_rgba(173,198,255,0.15)] hover:bg-primary-fixed hover:shadow-[0_0_25px_rgba(173,198,255,0.25)] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Add Asset
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md text-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-bright/20 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+<span class="font-label-md text-label-md text-sm">Support</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- TopNavBar (Shared Component) -->
+<header class="hidden md:flex justify-between items-center px-6 fixed top-0 right-0 w-[calc(100%-256px)] h-16 border-b border-white/10 bg-surface/40 backdrop-blur-xl shadow-sm z-30">
+<div class="flex-1 flex items-center gap-4">
+<!-- Search Bar placeholder -->
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full bg-surface-container-low/50 border border-white/10 rounded-full py-1.5 pl-10 pr-4 text-body-sm focus:outline-none focus:border-primary/50 text-on-surface placeholder:text-on-surface-variant/50 transition-colors" placeholder="Search organization..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+<div class="h-8 w-[1px] bg-white/10 mx-1"></div>
+<img alt="User Profile" class="w-9 h-9 rounded-full object-cover border border-white/20" data-alt="A small circular avatar showing a professional corporate headshot of a business executive against a dark, moody background, high-end photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0U4gwrASbJqseebPOKUzUqnVeAJ1KH0qb-503TUI_m97VVPMvAFH6s7ulqWYQg0c8OnVil2v5eFHbUrymgcUEVu-yMSBueAa2cXwBqMcJW8NMYexlT5s39kmNg78H1pthfY6cf94NuDmvNz9OzlbkHEB1ekB4Um6_8MuNfNpodTyue_XopjT7C7Vi-NCj4nKI0LW6Bw1a8Blez-hzeyrwZu1mJaq88K28oBm2k43xJGt14mj0QqeD"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="md:ml-64 pt-24 px-margin-mobile md:px-margin-desktop pb-12 min-h-screen">
+<!-- Page Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Organization Setup</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Configure your enterprise structure, manage asset classifications, and oversee directory access levels.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 rounded-lg glass-panel text-on-surface font-label-md text-label-md flex items-center gap-2 hover:bg-surface-bright/40 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export
+                </button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center gap-2 hover:bg-primary-fixed transition-colors shadow-[0_0_15px_rgba(173,198,255,0.1)]">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Entry
+                </button>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex border-b border-white/10 mb-8 overflow-x-auto no-scrollbar">
+<button class="px-6 py-3 font-label-md text-label-md tab-active flex items-center gap-2 whitespace-nowrap transition-all" onclick="switchTab('departments')">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+                Department Management
+            </button>
+<button class="px-6 py-3 font-label-md text-label-md tab-inactive flex items-center gap-2 whitespace-nowrap transition-all" onclick="switchTab('categories')">
+<span class="material-symbols-outlined text-[18px]">category</span>
+                Asset Categories
+            </button>
+<button class="px-6 py-3 font-label-md text-label-md tab-inactive flex items-center gap-2 whitespace-nowrap transition-all" onclick="switchTab('directory')">
+<span class="material-symbols-outlined text-[18px]">contacts</span>
+                Employee Directory
+            </button>
+</div>
+<!-- TAB CONTENT: Departments -->
+<div class="block animate-[fadeIn_0.3s_ease-out]" id="tab-departments">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Main List -->
+<div class="lg:col-span-2 space-y-4">
+<div class="glass-panel rounded-xl p-4 flex justify-between items-center mb-2">
+<div class="flex gap-4 items-center">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs">Total Depts: 14</span>
+<div class="h-4 w-px bg-white/10"></div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs">Active: 12</span>
+</div>
+<div class="flex gap-2">
+<button class="p-1.5 rounded hover:bg-white/5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">filter_list</span></button>
+<button class="p-1.5 rounded hover:bg-white/5 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">sort</span></button>
+</div>
+</div>
+<!-- List Items (Bento-ish rows) -->
+<div class="space-y-3">
+<!-- Item 1 -->
+<div class="glass-card-premium rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer hover:bg-surface-bright/20 transition-all border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container/80 flex items-center justify-center border border-white/10 group-hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]">devices</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">Information Technology</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">subdirectory_arrow_right</span>
+                                        Parent: Executive Board
+                                    </p>
+</div>
+</div>
+<div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0 mt-3 sm:mt-0">
+<div class="flex items-center gap-2">
+<img alt="Dept Head" class="w-8 h-8 rounded-full border border-white/20 object-cover" data-alt="Small circular headshot of a female IT director with glasses, smiling slightly, professional studio lighting against dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwagmAloGW5pHR7ZTpDuIegQC77C6P9xbrRM8ITp-fHzPSPXEadKUvgvj0oQtTYdFWlhEuhfDoW06LUrHlWY1JAdPtM-HefODBEQxYHf7yoPiiENKqGo--bUnO1HWzIjDEaxL5dl5NKHLVB3flgiRi-O-ZGQhTKr4iOR9KDAEm0GmxLsArasXAyqcHXQq4tjrisRWT4b_6f8p3cB4XkN3Z40UKZCmS96gZ9KffuGcaOkPh_Pzmk65H"/>
+<div class="text-left hidden sm:block">
+<p class="font-label-md text-[12px] text-on-surface">Sarah Jenkins</p>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Dept Head</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+                                    </span>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="glass-panel rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer hover:bg-surface-bright/20 transition-all border border-transparent">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container/80 flex items-center justify-center border border-white/10 group-hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-tertiary text-[24px]">engineering</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">Facilities Management</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">subdirectory_arrow_right</span>
+                                        Parent: Operations
+                                    </p>
+</div>
+</div>
+<div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0 mt-3 sm:mt-0">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-bright flex items-center justify-center border border-white/20 text-xs font-bold text-on-surface">MR</div>
+<div class="text-left hidden sm:block">
+<p class="font-label-md text-[12px] text-on-surface">Marcus Reed</p>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Interim Head</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+                                    </span>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panel (Quick Details / Analytics) -->
+<div class="lg:col-span-1 space-y-4">
+<div class="glass-panel rounded-xl p-6">
+<h3 class="font-label-md text-label-md text-primary mb-4 flex items-center gap-2 uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                            Dept Structure Overview
+                        </h3>
+<div class="relative h-48 w-full rounded-lg bg-surface-container-lowest/50 border border-white/5 mb-4 overflow-hidden">
+<!-- Placeholder for D3/Chart.js Tree Visualization -->
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-bright text-6xl opacity-50">account_tree</span>
+</div>
+<!-- Faux nodes -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-6 rounded bg-primary/20 border border-primary/50"></div>
+<div class="absolute top-10 left-1/2 w-px h-6 bg-white/20"></div>
+<div class="absolute top-16 left-1/4 w-1/2 h-px bg-white/20"></div>
+<div class="absolute top-16 left-1/4 w-px h-6 bg-white/20"></div>
+<div class="absolute top-16 right-1/4 w-px h-6 bg-white/20"></div>
+<div class="absolute top-22 left-1/4 -translate-x-1/2 w-10 h-5 rounded bg-tertiary/20 border border-tertiary/50"></div>
+<div class="absolute top-22 right-1/4 translate-x-1/2 w-10 h-5 rounded bg-secondary/20 border border-secondary/50"></div>
+</div>
+<ul class="space-y-3">
+<li class="flex justify-between items-center pb-2 border-b border-white/5">
+<span class="text-body-sm text-on-surface-variant">Max Depth Level</span>
+<span class="font-bold text-on-surface">4 Levels</span>
+</li>
+<li class="flex justify-between items-center pb-2 border-b border-white/5">
+<span class="text-body-sm text-on-surface-variant">Unassigned Assets</span>
+<span class="font-bold text-error">24</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-body-sm text-on-surface-variant">Orphaned Depts</span>
+<span class="font-bold text-on-surface">0</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB CONTENT: Directory (Hidden by default) -->
+<div class="hidden animate-[fadeIn_0.3s_ease-out]" id="tab-directory">
+<div class="glass-panel rounded-xl border border-white/10 overflow-hidden">
+<!-- Directory Toolbar -->
+<div class="p-4 border-b border-white/10 bg-surface-container-lowest/30 flex flex-wrap gap-4 justify-between items-center">
+<div class="flex gap-2">
+<select class="glass-input rounded-lg px-3 py-1.5 text-sm text-on-surface-variant focus:ring-0">
+<option>All Roles</option>
+<option>Administrators</option>
+<option>Dept Heads</option>
+<option>Standard Users</option>
+</select>
+<select class="glass-input rounded-lg px-3 py-1.5 text-sm text-on-surface-variant focus:ring-0">
+<option>All Departments</option>
+<option>IT</option>
+<option>Facilities</option>
+</select>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/40 border-b border-white/10">
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Employee</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Department</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Current Role</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- Row 1 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<img alt="Employee" class="w-10 h-10 rounded-full object-cover border border-white/10" data-alt="Professional headshot of a male software engineer, mid-30s, casual corporate attire, dark background, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvfrBlhwQ8q1amr-MdtoCKUWhuSTAw3TqfRJbDutgBckX4aUr5cZiPMfZNd-4OCuICTNninAfjznXbcGxXUq_RvRhRDB4CAg1SQcQz6OIT2ZmNkbXRAo48BzFXeAyRWQWHAAtB-seJ5gqnmbzL9iudbNrsObHsl4pWMU3erTNIz2f0dB8fC9OTMeZJdGmr_l64bSZQCfAJHMe1Pn06vZ2S7fFKgbh2aWXom0d83DZIqn1tILU8ZJiJ"/>
+<div>
+<p class="font-body-md text-on-surface font-medium">James Chen</p>
+<p class="font-body-sm text-on-surface-variant text-[12px]">j.chen@assetflow.inc</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-body-sm text-on-surface-variant">Information Technology</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-md bg-surface-variant text-on-surface-variant font-label-sm text-label-sm text-xs">
+                                        Standard User
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="px-3 py-1.5 rounded-lg border border-primary/30 text-primary hover:bg-primary/10 transition-colors font-label-sm text-xs">
+                                        Promote to Admin
+                                    </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center border border-tertiary/20 text-tertiary font-bold text-sm">
+                                            EW
+                                        </div>
+<div>
+<p class="font-body-md text-on-surface font-medium">Elena Weaver</p>
+<p class="font-body-sm text-on-surface-variant text-[12px]">e.weaver@assetflow.inc</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-body-sm text-on-surface-variant">Facilities Management</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-md bg-secondary-container/40 text-secondary font-label-sm text-label-sm text-xs border border-secondary/20">
+                                        Dept Admin
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple tab switching logic for demonstration
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.getElementById('tab-departments').classList.add('hidden');
+            document.getElementById('tab-directory').classList.add('hidden');
+            // Assuming categories tab exists, we'd hide it too (omitted for brevity)
+            
+            // Show selected tab content
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // Update tab styles (simplified for vanilla JS without framework)
+            const buttons = document.querySelectorAll('.overflow-x-auto button');
+            buttons.forEach(btn => {
+                if(btn.textContent.toLowerCase().includes(tabId)) {
+                    btn.classList.replace('tab-inactive', 'tab-active');
+                } else {
+                    btn.classList.replace('tab-active', 'tab-inactive');
+                }
+            });
+        }
+    </script>
+</body></html>

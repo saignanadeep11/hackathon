@@ -4,10 +4,30 @@ import { AssetCategory } from '../../infrastructure/database/models/asset-catego
 import { QueryArgs } from '../../../../../common/crud/base-crud.types';
 import { ConnectionResult } from '../../../../../common/crud/base-repository';
 import { CategoryFilterInput } from '../dto/category-filter.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private readonly categoriesRepository: CategoriesRepository) {}
+  constructor(
+     @InjectRepository(AssetCategory)
+    private readonly categoryRepository: Repository<AssetCategory>,
+ 
+
+    private readonly categoriesRepository: CategoriesRepository) {}
+
+
+    async findAll(): Promise<AssetCategory[]> {
+    return this.categoryRepository.find();
+  }
+
+  async create(name: string, custom_fields_schema?: string): Promise<AssetCategory> {
+    const category = this.categoryRepository.create({
+      name,
+      custom_fields_schema: custom_fields_schema ? JSON.parse(custom_fields_schema) : {},
+    });
+    return this.categoryRepository.save(category);
+  }
 
   async listCategories(): Promise<AssetCategory[]> {
     return this.categoriesRepository.listAll();

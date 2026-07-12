@@ -1,22 +1,22 @@
 export enum UserRole {
-  ADMIN            = 'ADMIN',
-  ASSET_MANAGER    = 'ASSET_MANAGER',
-  DEPARTMENT_HEAD  = 'DEPARTMENT_HEAD',
-  EMPLOYEE         = 'EMPLOYEE',
+  ADMIN = 'ADMIN',
+  ASSET_MANAGER = 'ASSET_MANAGER',
+  DEPARTMENT_HEAD = 'DEPARTMENT_HEAD',
+  EMPLOYEE = 'EMPLOYEE',
 }
 
 export const ROLE_LABELS: Record<UserRole, string> = {
-  [UserRole.ADMIN]:           'Administrator',
-  [UserRole.ASSET_MANAGER]:   'Asset Manager',
+  [UserRole.ADMIN]: 'Administrator',
+  [UserRole.ASSET_MANAGER]: 'Asset Manager',
   [UserRole.DEPARTMENT_HEAD]: 'Department Head',
-  [UserRole.EMPLOYEE]:        'Employee',
+  [UserRole.EMPLOYEE]: 'Employee',
 };
 
 export interface NavItem {
   label: string;
-  icon: string;       // Lucide icon name
+  icon: string; // Lucide icon name
   route: string;
-  roles: UserRole[];  // Empty array = accessible to all authenticated roles
+  roles: UserRole[]; // Empty array = accessible to all authenticated roles
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -26,55 +26,55 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Dashboard',
-    icon:  'layout-dashboard',
+    icon: 'layout-dashboard',
     route: '/dashboard',
     roles: [], // All authenticated users
   },
   {
     label: 'My Assets',
-    icon:  'package',
+    icon: 'package',
     route: '/my-assets',
     roles: [UserRole.EMPLOYEE, UserRole.DEPARTMENT_HEAD],
   },
   {
     label: 'Asset Directory',
-    icon:  'database',
+    icon: 'database',
     route: '/assets',
     roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER],
   },
   {
     label: 'Allocations',
-    icon:  'arrow-right-left',
+    icon: 'arrow-right-left',
     route: '/allocations',
     roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER, UserRole.DEPARTMENT_HEAD],
   },
   {
     label: 'Bookings',
-    icon:  'calendar',
+    icon: 'calendar',
     route: '/bookings',
     roles: [], // All authenticated users
   },
   {
     label: 'Maintenance',
-    icon:  'wrench',
+    icon: 'wrench',
     route: '/maintenance',
     roles: [], // All authenticated users
   },
   {
     label: 'Audits',
-    icon:  'shield-check',
+    icon: 'shield-check',
     route: '/audits',
     roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER],
   },
   {
-    label: 'Org & Categories',
-    icon:  'building-2',
+    label: 'Organization Setup',
+    icon: 'building-2',
     route: '/org',
     roles: [UserRole.ADMIN],
   },
   {
     label: 'Reports',
-    icon:  'bar-chart-2',
+    icon: 'bar-chart-2',
     route: '/reports',
     roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER],
   },
@@ -86,13 +86,13 @@ export const NAV_ITEMS: NavItem[] = [
 // Empty array = all authenticated users are allowed.
 // ──────────────────────────────────────────────────────────────
 export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
-  '/dashboard':  [],
-  '/my-assets':  [UserRole.EMPLOYEE, UserRole.DEPARTMENT_HEAD],
-  '/assets':     [UserRole.ADMIN, UserRole.ASSET_MANAGER],
-  '/allocations':[UserRole.ADMIN, UserRole.ASSET_MANAGER, UserRole.DEPARTMENT_HEAD],
-  '/bookings':   [],
-  '/maintenance':[],
-  '/audits':     [UserRole.ADMIN, UserRole.ASSET_MANAGER],
-  '/org':        [UserRole.ADMIN],
-  '/reports':    [UserRole.ADMIN, UserRole.ASSET_MANAGER],
+  '/dashboard': [],
+  '/my-assets': [UserRole.EMPLOYEE, UserRole.DEPARTMENT_HEAD],
+  '/assets': [UserRole.ADMIN, UserRole.ASSET_MANAGER],
+  '/allocations': [UserRole.ADMIN, UserRole.ASSET_MANAGER, UserRole.DEPARTMENT_HEAD],
+  '/bookings': [],
+  '/maintenance': [],
+  '/audits': [UserRole.ADMIN, UserRole.ASSET_MANAGER],
+  '/org': [UserRole.ADMIN],
+  '/reports': [UserRole.ADMIN, UserRole.ASSET_MANAGER],
 };

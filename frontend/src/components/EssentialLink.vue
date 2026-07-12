@@ -1,12 +1,6 @@
 <template>
-  <q-item
-    clickable
-    v-bind="linkProps"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+  <q-item clickable v-bind="linkProps">
+    <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
 
@@ -42,11 +36,11 @@ const linkProps = computed(() => {
     return {
       tag: 'a',
       href: props.link,
-      target: '_blank'
+      target: '_blank',
     };
   }
   return {
-    to: props.link
+    to: props.link,
   };
 });
 </script>

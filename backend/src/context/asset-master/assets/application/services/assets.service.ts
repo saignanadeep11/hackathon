@@ -5,10 +5,15 @@ import { RegisterAssetInput } from '../dto/register-asset.input';
 import { AssetFilterInput } from '../dto/asset-filter.input';
 import { NumberSequencesService } from '../../../../core/number-sequences/application/services/number-sequences.service';
 import { AssetStatus } from '../../../../../common/enums/database.enums';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AssetsService {
   constructor(
+    @InjectRepository(Asset)
+    private readonly repo: Repository<Asset>,
+
     private readonly assetsRepository: AssetsRepository,
     private readonly numberSequencesService: NumberSequencesService,
   ) {}
@@ -55,4 +60,16 @@ export class AssetsService {
 
     return this.assetsRepository.createOne(assetData);
   }
+  async findAll(): Promise<Asset[]> {
+    return this.repo.find({ relations: { category: true } });
+  }
+
+  async create(data: Partial<Asset>): Promise<Asset> {
+    const asset = this.repo.create({
+      ...data,
+      status: AssetStatus.AVAILABLE,
+    });
+    return this.repo.save(asset);
+  }
 }
+
