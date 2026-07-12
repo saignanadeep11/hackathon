@@ -1,0 +1,63 @@
+query GetAllocations($filter: AllocationFilterInput) {
+  allocations(filter: $filter) {
+    id
+    asset_id
+    asset {
+      id
+      asset_tag
+      name
+      status
+    }
+    allocated_to_user_id
+    allocated_to_user {
+      id
+      name
+      email
+    }
+    allocated_to_department_id
+    allocated_to_department {
+      id
+      name
+    }
+    requested_by_id
+    requested_by {
+      id
+      name
+      email
+    }
+    expected_return_date
+    return_date
+    status
+    check_in_notes
+  }
+}
+
+mutation RequestAllocation($input: CreateAllocationInput!) {
+  requestAllocation(input: $input) {
+    id
+    asset_id
+    status
+  }
+}
+
+mutation ApproveAllocation($id: String!) {
+  approveAllocation(id: $id) {
+    id
+    status
+  }
+}
+
+mutation RejectAllocation($id: String!) {
+  rejectAllocation(id: $id) {
+    id
+    status
+  }
+}
+
+mutation ReturnAsset($id: String!, $check_in_notes: String) {
+  returnAsset(id: $id, check_in_notes: $check_in_notes) {
+    id
+    status
+    return_date
+  }
+}

@@ -24,21 +24,21 @@ export class AssetAllocation {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'uuid', nullable: true })
-  allocated_to_user_id: string;
+  allocated_to_user_id: string | null;
 
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User)
   @JoinColumn({ name: 'allocated_to_user_id' })
-  allocated_to_user: User;
+  allocated_to_user: User | null;
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'uuid', nullable: true })
-  allocated_to_department_id: string;
+  allocated_to_department_id: string | null;
 
   @Field(() => Department, { nullable: true })
   @ManyToOne(() => Department)
   @JoinColumn({ name: 'allocated_to_department_id' })
-  allocated_to_department: Department;
+  allocated_to_department: Department | null;
 
   @Field(() => String)
   @Column({ type: 'uuid' })
@@ -51,11 +51,11 @@ export class AssetAllocation {
 
   @Field(() => Date, { nullable: true })
   @Column({ type: 'timestamp', nullable: true })
-  expected_return_date: Date;
+  expected_return_date: Date | null;
 
   @Field(() => Date, { nullable: true })
   @Column({ type: 'timestamp', nullable: true })
-  return_date: Date;
+  return_date: Date | null;
 
   @Field(() => AllocationStatus)
   @Column({ type: 'enum', enum: AllocationStatus, default: AllocationStatus.REQUESTED })
@@ -63,5 +63,5 @@ export class AssetAllocation {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'text', nullable: true })
-  check_in_notes: string;
+  check_in_notes: string | null;
 }

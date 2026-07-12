@@ -1,0 +1,47 @@
+query GetBookings($filter: BookingFilterInput) {
+  bookings(filter: $filter) {
+    id
+    asset_id
+    asset {
+      id
+      name
+      asset_tag
+      location
+    }
+    booked_by_user_id
+    booked_by_user {
+      id
+      name
+      email
+    }
+    start_time
+    end_time
+    status
+  }
+}
+
+query GetBookableAssets {
+  bookableAssets {
+    id
+    name
+    asset_tag
+    location
+    status
+  }
+}
+
+mutation CreateBooking($input: CreateBookingInput!) {
+  createBooking(input: $input) {
+    id
+    start_time
+    end_time
+    status
+  }
+}
+
+mutation CancelBooking($id: String!) {
+  cancelBooking(id: $id) {
+    id
+    status
+  }
+}
