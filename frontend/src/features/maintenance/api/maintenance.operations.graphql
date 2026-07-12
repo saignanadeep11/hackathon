@@ -1,0 +1,59 @@
+query GetMaintenanceRequests($filter: MaintenanceFilterInput) {
+  maintenanceRequests(filter: $filter) {
+    id
+    asset_id
+    asset {
+      id
+      name
+      asset_tag
+      status
+    }
+    raised_by_user_id
+    raised_by_user {
+      id
+      name
+      email
+    }
+    technician_name
+    description
+    priority
+    photo_url
+    status
+  }
+}
+
+mutation CreateMaintenanceRequest($input: CreateMaintenanceRequestInput!) {
+  createMaintenanceRequest(input: $input) {
+    id
+    status
+  }
+}
+
+mutation ApproveMaintenanceRequest($id: String!) {
+  approveMaintenanceRequest(id: $id) {
+    id
+    status
+  }
+}
+
+mutation RejectMaintenanceRequest($id: String!) {
+  rejectMaintenanceRequest(id: $id) {
+    id
+    status
+  }
+}
+
+mutation AssignTechnician($id: String!, $technician_name: String!) {
+  assignTechnician(id: $id, technician_name: $technician_name) {
+    id
+    technician_name
+    status
+  }
+}
+
+mutation ResolveMaintenanceRequest($id: String!) {
+  resolveMaintenanceRequest(id: $id) {
+    id
+    status
+  }
+}

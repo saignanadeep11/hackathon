@@ -8,12 +8,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { IdentityModule } from './context/identity/identity.module';
+import { MaintenanceModule } from './context/workflows/maintenance/maintenance.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
     IdentityModule,
+    MaintenanceModule,
+
     
     ConfigModule.forRoot({
       validate: validateEnv,

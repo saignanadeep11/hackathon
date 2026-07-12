@@ -4,7 +4,9 @@
     <div class="row items-center justify-between q-mb-lg">
       <div>
         <h1 class="text-h4 font-bold q-my-none text-white">Asset Directory</h1>
-        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Track, monitor, and register physical assets across departments.</p>
+        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">
+          Track, monitor, and register physical assets across departments.
+        </p>
       </div>
       <q-btn
         v-if="canRegister"
@@ -113,7 +115,11 @@
         no-data-label="No assets registered yet"
       >
         <template v-slot:body-cell-asset_tag="props">
-          <q-td :props="props" class="font-mono text-primary font-semibold cursor-pointer" @click="viewDetails(props.row)">
+          <q-td
+            :props="props"
+            class="font-mono text-primary font-semibold cursor-pointer"
+            @click="viewDetails(props.row)"
+          >
             {{ props.row.asset_tag }}
           </q-td>
         </template>
@@ -138,30 +144,24 @@
               color="positive"
               size="20px"
             />
-            <q-icon
-              v-else
-              name="cancel"
-              color="grey-7"
-              size="20px"
-            />
+            <q-icon v-else name="cancel" color="grey-7" size="20px" />
           </q-td>
         </template>
 
         <template v-slot:body-cell-acquisition_cost="props">
           <q-td :props="props">
-            ${{ Number(props.row.acquisition_cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+            ${{
+              Number(props.row.acquisition_cost).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+            }}
           </q-td>
         </template>
 
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm text-right">
-            <q-btn
-              flat
-              round
-              dense
-              color="primary"
-              @click="viewDetails(props.row)"
-            >
+            <q-btn flat round dense color="primary" @click="viewDetails(props.row)">
               <lucide-icon name="eye" :size="16" />
               <q-tooltip>View Details & History</q-tooltip>
             </q-btn>
@@ -172,18 +172,27 @@
 
     <!-- Side Detail Drawer / Dialog -->
     <q-dialog v-model="detailsOpen" position="right" full-height>
-      <q-card class="details-drawer text-white" style="width: 480px; max-width: 90vw;">
+      <q-card class="details-drawer text-white" style="width: 480px; max-width: 90vw">
         <q-card-section class="row items-center q-pb-md border-bottom-glass">
           <div class="text-h6 font-semibold">Asset Specification</div>
           <q-space />
           <q-btn flat round dense icon="close" color="grey-5" @click="detailsOpen = false" />
         </q-card-section>
 
-        <q-card-section v-if="selectedAsset" class="scroll q-pa-md" style="height: calc(100% - 70px);">
+        <q-card-section
+          v-if="selectedAsset"
+          class="scroll q-pa-md"
+          style="height: calc(100% - 70px)"
+        >
           <!-- General Details -->
           <div class="text-center q-mb-lg">
             <q-avatar size="80px" color="rgba(255,255,255,0.05)" class="q-mb-sm border-glass">
-              <img v-if="selectedAsset.photo_url" :src="selectedAsset.photo_url" alt="Asset Photo" style="object-fit: cover;" />
+              <img
+                v-if="selectedAsset.photo_url"
+                :src="selectedAsset.photo_url"
+                alt="Asset Photo"
+                style="object-fit: cover"
+              />
               <q-icon v-else name="computer" size="40px" color="primary" />
             </q-avatar>
             <div class="text-h6 font-bold">{{ selectedAsset.name }}</div>
@@ -213,7 +222,9 @@
             </div>
             <div class="spec-row">
               <span class="spec-label">Acquisition Cost</span>
-              <span class="spec-value">${{ Number(selectedAsset.acquisition_cost).toLocaleString() }}</span>
+              <span class="spec-value"
+                >${{ Number(selectedAsset.acquisition_cost).toLocaleString() }}</span
+              >
             </div>
             <div class="spec-row">
               <span class="spec-label">Condition</span>
@@ -227,7 +238,9 @@
 
           <!-- Dynamic Custom Fields -->
           <template v-if="parsedCustomFields && Object.keys(parsedCustomFields).length > 0">
-            <div class="text-subtitle2 text-primary q-mb-sm font-semibold">Custom Specifications</div>
+            <div class="text-subtitle2 text-primary q-mb-sm font-semibold">
+              Custom Specifications
+            </div>
             <div class="q-gutter-y-sm q-mb-lg">
               <div v-for="(val, key) in parsedCustomFields" :key="key" class="spec-row">
                 <span class="spec-label">{{ formatKey(String(key)) }}</span>
@@ -237,7 +250,9 @@
           </template>
 
           <!-- History Tab -->
-          <div class="text-subtitle2 text-primary q-mb-sm font-semibold">Asset Lifespans & History</div>
+          <div class="text-subtitle2 text-primary q-mb-sm font-semibold">
+            Asset Lifespans & History
+          </div>
           <q-list class="history-timeline">
             <q-item class="q-px-none">
               <q-item-section avatar class="timeline-avatar">
@@ -245,10 +260,14 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-weight-bold text-white">Asset Registered</q-item-label>
-                <q-item-label caption class="text-grey-5">Initial registration status set to Available</q-item-label>
+                <q-item-label caption class="text-grey-5"
+                  >Initial registration status set to Available</q-item-label
+                >
               </q-item-section>
               <q-item-section side top>
-                <q-item-label caption class="text-grey-6">{{ formatDate(String(selectedAsset.createdAt)) }}</q-item-label>
+                <q-item-label caption class="text-grey-6">{{
+                  formatDate(String(selectedAsset.createdAt))
+                }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -266,7 +285,11 @@ import { UserRole } from 'src/config/permissions';
 import { useAssets, useCategories } from '../api/useAssets';
 import AssetStatusBadge from './AssetStatusBadge.vue';
 import RegisterAssetModal from './RegisterAssetModal.vue';
-import { type GetAssetsQuery, type AssetFilterInput, type AssetStatus } from 'src/graphql/generated/graphql';
+import {
+  type GetAssetsQuery,
+  type AssetFilterInput,
+  type AssetStatus,
+} from 'src/graphql/generated/graphql';
 
 type AssetType = GetAssetsQuery['assets'][number];
 
@@ -311,12 +334,41 @@ const pagination = ref({
 const columns = [
   { name: 'asset_tag', label: 'Tag', field: 'asset_tag', align: 'left' as const, sortable: true },
   { name: 'name', label: 'Name', field: 'name', align: 'left' as const, sortable: true },
-  { name: 'category', label: 'Category', field: (row: AssetType) => row.category?.name || 'N/A', align: 'left' as const, sortable: true },
+  {
+    name: 'category',
+    label: 'Category',
+    field: (row: AssetType) => row.category?.name || 'N/A',
+    align: 'left' as const,
+    sortable: true,
+  },
   { name: 'status', label: 'Status', field: 'status', align: 'left' as const, sortable: true },
-  { name: 'condition', label: 'Condition', field: 'condition', align: 'left' as const, sortable: true },
-  { name: 'location', label: 'Location', field: 'location', align: 'left' as const, sortable: true },
-  { name: 'is_shared_bookable', label: 'Bookable', field: 'is_shared_bookable', align: 'center' as const },
-  { name: 'acquisition_cost', label: 'Cost', field: 'acquisition_cost', align: 'right' as const, sortable: true },
+  {
+    name: 'condition',
+    label: 'Condition',
+    field: 'condition',
+    align: 'left' as const,
+    sortable: true,
+  },
+  {
+    name: 'location',
+    label: 'Location',
+    field: 'location',
+    align: 'left' as const,
+    sortable: true,
+  },
+  {
+    name: 'is_shared_bookable',
+    label: 'Bookable',
+    field: 'is_shared_bookable',
+    align: 'center' as const,
+  },
+  {
+    name: 'acquisition_cost',
+    label: 'Cost',
+    field: 'acquisition_cost',
+    align: 'right' as const,
+    sortable: true,
+  },
   { name: 'actions', label: '', field: '', align: 'right' as const },
 ];
 
@@ -341,7 +393,7 @@ const parsedCustomFields = computed(() => {
 });
 
 function formatKey(key: string): string {
-  return key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatDate(dateStr: string): string {

@@ -25,10 +25,10 @@ export default boot(({ app }) => {
         // Convert kebab-case to PascalCase for icon name
         const componentName = props.name
           .split('-')
-          .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
           .join('');
-          const iconComponent = (icons as Record<string, unknown>)[componentName];
-        
+        const iconComponent = (icons as Record<string, unknown>)[componentName];
+
         if (!iconComponent) {
           console.warn(`Lucide icon "${props.name}" not found.`);
           return h('span');

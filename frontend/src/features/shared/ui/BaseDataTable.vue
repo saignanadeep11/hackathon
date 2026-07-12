@@ -40,7 +40,7 @@ watch(
   () => props.totalCount,
   (newVal) => {
     pagination.value.rowsNumber = newVal || 0;
-  }
+  },
 );
 
 function onRequest(props: any) {

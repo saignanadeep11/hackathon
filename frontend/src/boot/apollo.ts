@@ -21,24 +21,30 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
-    }
-  }
+    },
+  };
 });
 
 // Global Error Handling Link
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-      console.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${JSON.stringify(path)}`);
-      
+      console.error(
+        `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${JSON.stringify(path)}`,
+      );
+
       // Auto-logout on unauthorized
-      if (extensions?.code === 'UNAUTHENTICATED' || message.includes('Unauthorized') || message.includes('log in')) {
+      if (
+        extensions?.code === 'UNAUTHENTICATED' ||
+        message.includes('Unauthorized') ||
+        message.includes('log in')
+      ) {
         const authStore = useAuthStore();
         void authStore.clearSession();
         // Redirect will be handled by router guards if state changes, or we can force reload
-        window.location.href = '/#/login'; 
+        window.location.href = '/#/login';
       }
-      
+
       Notify.create({
         type: 'negative',
         message: `Error: ${message}`,

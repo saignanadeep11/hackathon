@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide" persistent>
-    <q-card class="q-card--glass" style="width: 500px; max-width: 90vw;">
+    <q-card class="q-card--glass" style="width: 500px; max-width: 90vw">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6 text-white font-semibold">Register New Asset</div>
         <q-space />
@@ -15,7 +15,7 @@
             label="Asset Name"
             filled
             dark
-            :rules="[val => !!val || 'Name is required']"
+            :rules="[(val) => !!val || 'Name is required']"
             dense
           />
 
@@ -25,7 +25,7 @@
             label="Serial Number"
             filled
             dark
-            :rules="[val => !!val || 'Serial number is required']"
+            :rules="[(val) => !!val || 'Serial number is required']"
             dense
           />
 
@@ -39,7 +39,7 @@
             dense
             option-value="id"
             option-label="name"
-            :rules="[val => !!val || 'Category is required']"
+            :rules="[(val) => !!val || 'Category is required']"
             @update:model-value="handleCategoryChange"
           />
 
@@ -49,7 +49,7 @@
             label="Location"
             filled
             dark
-            :rules="[val => !!val || 'Location is required']"
+            :rules="[(val) => !!val || 'Location is required']"
             dense
           />
 
@@ -62,7 +62,7 @@
                 type="date"
                 filled
                 dark
-                :rules="[val => !!val || 'Date is required']"
+                :rules="[(val) => !!val || 'Date is required']"
                 dense
               />
             </div>
@@ -75,7 +75,9 @@
                 prefix="$"
                 filled
                 dark
-                :rules="[val => val !== null && val !== undefined && val >= 0 || 'Cost must be >= 0']"
+                :rules="[
+                  (val) => (val !== null && val !== undefined && val >= 0) || 'Cost must be >= 0',
+                ]"
                 dense
               />
             </div>
@@ -91,7 +93,7 @@
                 filled
                 dark
                 dense
-                :rules="[val => !!val || 'Condition is required']"
+                :rules="[(val) => !!val || 'Condition is required']"
               />
             </div>
             <!-- Bookable Toggle -->
@@ -106,16 +108,16 @@
           </div>
 
           <!-- Photo URL -->
-          <q-input
-            v-model="form.photo_url"
-            label="Photo URL (Optional)"
-            filled
-            dark
-            dense
-          />
+          <q-input v-model="form.photo_url" label="Photo URL (Optional)" filled dark dense />
 
           <!-- Dynamic Custom Fields Section -->
-          <template v-if="customFieldsSchema && customFieldsSchema.fields && customFieldsSchema.fields.length > 0">
+          <template
+            v-if="
+              customFieldsSchema &&
+              customFieldsSchema.fields &&
+              customFieldsSchema.fields.length > 0
+            "
+          >
             <div class="text-subtitle2 text-grey-4 q-mt-sm">Category Specific Fields</div>
             <div class="q-gutter-y-sm">
               <div v-for="field in customFieldsSchema.fields" :key="field.name">
@@ -127,7 +129,7 @@
                   filled
                   dark
                   dense
-                  :rules="field.required ? [val => !!val || `${field.label} is required`] : []"
+                  :rules="field.required ? [(val) => !!val || `${field.label} is required`] : []"
                 />
                 <!-- Number Custom Field -->
                 <q-input
@@ -138,7 +140,14 @@
                   filled
                   dark
                   dense
-                  :rules="field.required ? [val => val !== null && val !== undefined || `${field.label} is required`] : []"
+                  :rules="
+                    field.required
+                      ? [
+                          (val) =>
+                            (val !== null && val !== undefined) || `${field.label} is required`,
+                        ]
+                      : []
+                  "
                 />
                 <!-- Toggle Custom Field -->
                 <q-toggle
@@ -224,9 +233,10 @@ function handleCategoryChange(category: CategoryType | null) {
   customFieldsData.value = {};
   if (category?.custom_fields_schema) {
     try {
-      const parsed = typeof category.custom_fields_schema === 'string'
-        ? JSON.parse(category.custom_fields_schema)
-        : category.custom_fields_schema;
+      const parsed =
+        typeof category.custom_fields_schema === 'string'
+          ? JSON.parse(category.custom_fields_schema)
+          : category.custom_fields_schema;
       if (parsed?.fields) {
         parsed.fields.forEach((field: SchemaField) => {
           if (field.type === 'boolean' || field.type === 'toggle') {

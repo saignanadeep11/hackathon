@@ -36,7 +36,11 @@ export function useCategories() {
 }
 
 export function useRegisterAsset() {
-  const { mutate: registerMutate, loading: registerLoading, error: registerError } = useMutation(RegisterAssetDocument);
+  const {
+    mutate: registerMutate,
+    loading: registerLoading,
+    error: registerError,
+  } = useMutation(RegisterAssetDocument);
 
   async function registerAsset(input: RegisterAssetInput) {
     const result = await registerMutate({ input });

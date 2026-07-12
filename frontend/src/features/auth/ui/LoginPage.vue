@@ -97,11 +97,7 @@
             <div class="divider-line" />
           </div>
 
-          <q-btn
-            flat
-            class="full-width sso-btn"
-            @click="handleSso"
-          >
+          <q-btn flat class="full-width sso-btn" @click="handleSso">
             <lucide-icon name="fingerprint" :size="20" class="q-mr-sm" />
             Authenticate with SSO
           </q-btn>
