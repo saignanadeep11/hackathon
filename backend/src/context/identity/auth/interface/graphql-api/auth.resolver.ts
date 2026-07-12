@@ -10,7 +10,10 @@ export class AuthResolver {
 
   @Mutation(() => LoginResponse)
   async login(@Args('input') input: LoginInput): Promise<LoginResponse> {
-    const user = await this.authService.validateUser(input.email, input.password);
+    const user = await this.authService.validateUser(
+      input.email,
+      input.password,
+    );
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }

@@ -13,7 +13,8 @@ export class SeedAssetNumberSequence1783838383839 implements MigrationInterface 
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.manager.createQueryBuilder()
+    await queryRunner.manager
+      .createQueryBuilder()
       .delete()
       .from('number_sequences')
       .where('prefix = :prefix', { prefix: 'AF' })

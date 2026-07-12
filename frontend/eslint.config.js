@@ -79,5 +79,10 @@ export default defineConfigWithVueTs(
     },
   },
 
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: false,
+    },
+  },
   prettierSkipFormatting,
 );

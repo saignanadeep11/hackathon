@@ -9,7 +9,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { v7 as uuidv7 } from 'uuid';
-import { GeneralStatus, UserRole } from '../../../../../../common/enums/database.enums';
+import {
+  GeneralStatus,
+  UserRole,
+} from '../../../../../../common/enums/database.enums';
 import { Department } from '../../../../departments/infrastructure/database/models/department.entity';
 
 @ObjectType()
@@ -44,7 +47,7 @@ export class User {
   department_id: string;
 
   @Field(() => Department, { nullable: true })
-  @ManyToOne(() => Department, dept => dept.users)
+  @ManyToOne(() => Department, (dept) => dept.users)
   @JoinColumn({ name: 'department_id' })
   department: Department;
 

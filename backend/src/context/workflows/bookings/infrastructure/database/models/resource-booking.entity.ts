@@ -39,6 +39,10 @@ export class ResourceBooking {
   end_time: Date;
 
   @Field(() => BookingStatus)
-  @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.UPCOMING })
+  @Column({
+    type: 'enum',
+    enum: BookingStatus,
+    default: BookingStatus.UPCOMING,
+  })
   status: BookingStatus;
 }

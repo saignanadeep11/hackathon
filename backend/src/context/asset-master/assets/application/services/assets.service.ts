@@ -28,10 +28,16 @@ export class AssetsService {
 
   async registerAsset(input: RegisterAssetInput): Promise<Asset> {
     // Check for unique serial number first
-    const existing = await this.assetsRepository.listAll({ search: input.serial_number });
-    const serialExists = existing.some(a => a.serial_number === input.serial_number);
+    const existing = await this.assetsRepository.listAll({
+      search: input.serial_number,
+    });
+    const serialExists = existing.some(
+      (a) => a.serial_number === input.serial_number,
+    );
     if (serialExists) {
-      throw new ConflictException(`Asset with serial number "${input.serial_number}" already exists`);
+      throw new ConflictException(
+        `Asset with serial number "${input.serial_number}" already exists`,
+      );
     }
 
     // Generate the atomic asset tag using the prefix "AF"
@@ -39,7 +45,8 @@ export class AssetsService {
 
     // Ensure custom_fields_data is stored as a JSON string
     const customFieldsData: string =
-      typeof input.custom_fields_data === 'string' && input.custom_fields_data.trim()
+      typeof input.custom_fields_data === 'string' &&
+      input.custom_fields_data.trim()
         ? input.custom_fields_data
         : '{}';
 
@@ -48,7 +55,7 @@ export class AssetsService {
       name: input.name,
       serial_number: input.serial_number,
       category_id: input.category_id,
-      acquisition_date: new Date(input.acquisition_date as unknown as string),
+      acquisition_date: new Date(input.acquisition_date),
       acquisition_cost: input.acquisition_cost,
       condition: input.condition,
       location: input.location,
@@ -72,4 +79,3 @@ export class AssetsService {
     return this.repo.save(asset);
   }
 }
-

@@ -1,10 +1,16 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
 import { AuditCycleStatus } from '../../../../../../common/enums/database.enums';
 import { Department } from '../../../../../identity/departments/infrastructure/database/models/department.entity';
 import { AuditItem } from './audit-item.entity';
-
 
 @ObjectType()
 @Entity('audit_cycles')
@@ -35,10 +41,14 @@ export class AuditCycle {
   end_date: Date;
 
   @Field(() => AuditCycleStatus)
-  @Column({ type: 'enum', enum: AuditCycleStatus, default: AuditCycleStatus.OPEN })
+  @Column({
+    type: 'enum',
+    enum: AuditCycleStatus,
+    default: AuditCycleStatus.OPEN,
+  })
   status: AuditCycleStatus;
 
   @Field(() => [AuditItem], { nullable: true })
-  @OneToMany(() => AuditItem, item => item.audit_cycle)
+  @OneToMany(() => AuditItem, (item) => item.audit_cycle)
   items: AuditItem[];
 }

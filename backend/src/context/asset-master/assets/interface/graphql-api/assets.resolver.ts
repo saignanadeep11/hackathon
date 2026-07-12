@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, InputType, Field, Float } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  InputType,
+  Field,
+  Float,
+} from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Asset } from '../../infrastructure/database/models/asset.entity';
 import { AssetsService } from '../../application/services/assets.service';

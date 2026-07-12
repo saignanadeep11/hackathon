@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
 import { GeneralStatus } from '../../../../../../common/enums/database.enums';
@@ -38,6 +45,6 @@ export class Department {
   head: User;
 
   @Field(() => [User], { nullable: true })
-  @OneToMany(() => User, user => user.department)
+  @OneToMany(() => User, (user) => user.department)
   users: User[];
 }

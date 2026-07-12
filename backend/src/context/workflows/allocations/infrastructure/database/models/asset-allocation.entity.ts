@@ -58,7 +58,11 @@ export class AssetAllocation {
   return_date: Date;
 
   @Field(() => AllocationStatus)
-  @Column({ type: 'enum', enum: AllocationStatus, default: AllocationStatus.REQUESTED })
+  @Column({
+    type: 'enum',
+    enum: AllocationStatus,
+    default: AllocationStatus.REQUESTED,
+  })
   status: AllocationStatus;
 
   @Field(() => String, { nullable: true })

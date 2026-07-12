@@ -9,9 +9,11 @@ export function getSelectedFields(info: GraphQLResolveInfo): string[] {
   // graphqlFields returns a deeply nested object of all selected fields.
   // We extract the top-level keys which map to the entity columns.
   const parsedFields = graphqlFields(info);
-  
+
   // Exclude GraphQL metadata fields like __typename
-  const fields = Object.keys(parsedFields).filter((key) => !key.startsWith('__'));
-  
+  const fields = Object.keys(parsedFields).filter(
+    (key) => !key.startsWith('__'),
+  );
+
   return fields;
 }

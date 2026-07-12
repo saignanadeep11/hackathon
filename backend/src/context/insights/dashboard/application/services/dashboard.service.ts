@@ -5,7 +5,12 @@ import { Asset } from '../../../../asset-master/assets/infrastructure/database/m
 import { AssetAllocation } from '../../../../workflows/allocations/infrastructure/database/models/asset-allocation.entity';
 import { ResourceBooking } from '../../../../workflows/bookings/infrastructure/database/models/resource-booking.entity';
 import { MaintenanceRequest } from '../../../../workflows/maintenance/infrastructure/database/models/maintenance-request.entity';
-import { AssetStatus, AllocationStatus, BookingStatus, MaintenanceStatus } from '../../../../../common/enums/database.enums';
+import {
+  AssetStatus,
+  AllocationStatus,
+  BookingStatus,
+  MaintenanceStatus,
+} from '../../../../../common/enums/database.enums';
 
 @Injectable()
 export class DashboardService {
@@ -39,22 +44,24 @@ export class DashboardService {
       this.maintenanceRepo.count({
         where: [
           { status: MaintenanceStatus.PENDING },
-          { status: MaintenanceStatus.IN_PROGRESS }
-        ]
+          { status: MaintenanceStatus.IN_PROGRESS },
+        ],
       }),
       this.bookingRepo.count({ where: { status: BookingStatus.ONGOING } }),
-      this.allocationRepo.count({ where: { status: AllocationStatus.REQUESTED } }),
+      this.allocationRepo.count({
+        where: { status: AllocationStatus.REQUESTED },
+      }),
       this.allocationRepo.count({
         where: {
           status: AllocationStatus.ACTIVE,
           expected_return_date: MoreThanOrEqual(todayStr as any),
-        }
+        },
       }),
       this.allocationRepo.count({
         where: {
           status: AllocationStatus.ACTIVE,
           expected_return_date: LessThan(todayStr as any),
-        }
+        },
       }),
     ]);
 

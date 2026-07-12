@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
 import { ActivityLogType } from '../../../../../../common/enums/database.enums';

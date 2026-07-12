@@ -1,4 +1,10 @@
-import { Resolver, Query, Mutation, Args, registerEnumType } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Department } from '../../infrastructure/database/models/department.entity';
 import { DepartmentsService } from '../../application/services/departments.service';
@@ -19,7 +25,9 @@ export class DepartmentsResolver {
   }
 
   @Query(() => Department, { name: 'department' })
-  async getDepartment(@Args('id', { type: () => String }) id: string): Promise<Department> {
+  async getDepartment(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<Department> {
     return this.departmentsService.findOne(id);
   }
 
@@ -27,7 +35,8 @@ export class DepartmentsResolver {
   async createDepartment(
     @Args('name', { type: () => String }) name: string,
     @Args('head_id', { type: () => String, nullable: true }) head_id?: string,
-    @Args('parent_department_id', { type: () => String, nullable: true }) parent_department_id?: string,
+    @Args('parent_department_id', { type: () => String, nullable: true })
+    parent_department_id?: string,
   ): Promise<Department> {
     return this.departmentsService.create(name, head_id, parent_department_id);
   }

@@ -15,7 +15,6 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   imports: [
     IdentityModule,
     ConfigModule.forRoot({
-
       validate: validateEnv,
       isGlobal: true,
     }),
@@ -30,7 +29,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, 
+        synchronize: true,
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -45,4 +44,3 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   providers: [AppService],
 })
 export class AppModule {}
-

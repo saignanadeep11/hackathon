@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
 import { AssetStatus } from '../../../../../../common/enums/database.enums';
@@ -28,7 +35,7 @@ export class Asset {
   category_id: string;
 
   @Field(() => AssetCategory)
-  @ManyToOne(() => AssetCategory, category => category.assets)
+  @ManyToOne(() => AssetCategory, (category) => category.assets)
   @JoinColumn({ name: 'category_id' })
   category: AssetCategory;
 
@@ -68,4 +75,3 @@ export class Asset {
   @CreateDateColumn()
   createdAt: Date;
 }
-

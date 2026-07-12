@@ -10,21 +10,25 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CategoriesService {
   constructor(
-     @InjectRepository(AssetCategory)
+    @InjectRepository(AssetCategory)
     private readonly categoryRepository: Repository<AssetCategory>,
- 
 
-    private readonly categoriesRepository: CategoriesRepository) {}
+    private readonly categoriesRepository: CategoriesRepository,
+  ) {}
 
-
-    async findAll(): Promise<AssetCategory[]> {
+  async findAll(): Promise<AssetCategory[]> {
     return this.categoryRepository.find();
   }
 
-  async create(name: string, custom_fields_schema?: string): Promise<AssetCategory> {
+  async create(
+    name: string,
+    custom_fields_schema?: string,
+  ): Promise<AssetCategory> {
     const category = this.categoryRepository.create({
       name,
-      custom_fields_schema: custom_fields_schema ? JSON.parse(custom_fields_schema) : {},
+      custom_fields_schema: custom_fields_schema
+        ? JSON.parse(custom_fields_schema)
+        : {},
     });
     return this.categoryRepository.save(category);
   }
@@ -33,7 +37,9 @@ export class CategoriesService {
     return this.categoriesRepository.listAll();
   }
 
-  async listCategoriesPage(args: QueryArgs<CategoryFilterInput>): Promise<ConnectionResult<AssetCategory>> {
+  async listCategoriesPage(
+    args: QueryArgs<CategoryFilterInput>,
+  ): Promise<ConnectionResult<AssetCategory>> {
     return this.categoriesRepository.findAll(args);
   }
 
@@ -41,7 +47,10 @@ export class CategoriesService {
     return this.categoriesRepository.findById(id);
   }
 
-  async createCategory(name: string, customFieldsSchemaStr: string): Promise<AssetCategory> {
+  async createCategory(
+    name: string,
+    customFieldsSchemaStr: string,
+  ): Promise<AssetCategory> {
     let validSchema = customFieldsSchemaStr;
     try {
       JSON.parse(customFieldsSchemaStr);
@@ -55,7 +64,11 @@ export class CategoriesService {
     });
   }
 
-  async updateCategory(id: string, name?: string, customFieldsSchema?: string): Promise<AssetCategory> {
+  async updateCategory(
+    id: string,
+    name?: string,
+    customFieldsSchema?: string,
+  ): Promise<AssetCategory> {
     const category = await this.getCategoryById(id);
     if (!category) {
       throw new Error(`Category with ID ${id} not found`);

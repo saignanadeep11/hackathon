@@ -51,7 +51,7 @@ export abstract class BaseRepository<
     // Apply AST Selected Fields
     if (selectedFields && selectedFields.length > 0) {
       // Always select ID
-      const selectArgs = ['e.id', ...selectedFields.map(f => `e.${f}`)];
+      const selectArgs = ['e.id', ...selectedFields.map((f) => `e.${f}`)];
       qb.select(selectArgs);
     }
 

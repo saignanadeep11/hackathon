@@ -48,7 +48,8 @@ export class CategoriesResolver {
   @Mutation(() => AssetCategory, { name: 'createCategory' })
   async createCategory(
     @Args('name') name: string,
-    @Args('customFieldsSchema', { defaultValue: '{}' }) customFieldsSchema: string,
+    @Args('customFieldsSchema', { defaultValue: '{}' })
+    customFieldsSchema: string,
   ): Promise<AssetCategory> {
     return this.categoriesService.createCategory(name, customFieldsSchema);
   }

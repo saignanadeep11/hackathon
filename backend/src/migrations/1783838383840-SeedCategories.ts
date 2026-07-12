@@ -9,8 +9,18 @@ export class SeedCategories1783838383840 implements MigrationInterface {
         name: 'Electronics',
         custom_fields_schema: JSON.stringify({
           fields: [
-            { name: 'warranty_period', label: 'Warranty Period (Months)', type: 'number', required: true },
-            { name: 'model_number', label: 'Model Number', type: 'text', required: false },
+            {
+              name: 'warranty_period',
+              label: 'Warranty Period (Months)',
+              type: 'number',
+              required: true,
+            },
+            {
+              name: 'model_number',
+              label: 'Model Number',
+              type: 'text',
+              required: false,
+            },
           ],
         }),
       },
@@ -19,8 +29,18 @@ export class SeedCategories1783838383840 implements MigrationInterface {
         name: 'Furniture',
         custom_fields_schema: JSON.stringify({
           fields: [
-            { name: 'material', label: 'Material (e.g. Wood, Steel)', type: 'text', required: true },
-            { name: 'dimensions', label: 'Dimensions (WxDxH)', type: 'text', required: false },
+            {
+              name: 'material',
+              label: 'Material (e.g. Wood, Steel)',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'dimensions',
+              label: 'Dimensions (WxDxH)',
+              type: 'text',
+              required: false,
+            },
           ],
         }),
       },
@@ -29,8 +49,18 @@ export class SeedCategories1783838383840 implements MigrationInterface {
         name: 'Vehicles',
         custom_fields_schema: JSON.stringify({
           fields: [
-            { name: 'license_plate', label: 'License Plate', type: 'text', required: true },
-            { name: 'year', label: 'Year of Manufacture', type: 'number', required: true },
+            {
+              name: 'license_plate',
+              label: 'License Plate',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'year',
+              label: 'Year of Manufacture',
+              type: 'number',
+              required: true,
+            },
           ],
         }),
       },
@@ -40,7 +70,8 @@ export class SeedCategories1783838383840 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.manager.createQueryBuilder()
+    await queryRunner.manager
+      .createQueryBuilder()
       .delete()
       .from('asset_categories')
       .execute();

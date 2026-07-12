@@ -20,6 +20,6 @@ export class AssetCategory {
   custom_fields_schema: string;
 
   @Field(() => [Asset], { nullable: true })
-  @OneToMany(() => Asset, asset => asset.category)
+  @OneToMany(() => Asset, (asset) => asset.category)
   assets: Asset[];
 }

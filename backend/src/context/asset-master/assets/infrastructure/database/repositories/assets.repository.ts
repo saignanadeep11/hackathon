@@ -7,8 +7,15 @@ import { Asset } from '../models/asset.entity';
 @Injectable()
 export class AssetsRepository extends BaseRepository<Asset, any, any> {
   protected dtoClass = class {} as any;
-  protected sortableFields = { id: 'id', asset_tag: 'asset_tag', name: 'name', createdAt: 'createdAt' };
-  protected rootFilterConfig = { filterableFields: { id: 'id', asset_tag: 'asset_tag', status: 'status' } };
+  protected sortableFields = {
+    id: 'id',
+    asset_tag: 'asset_tag',
+    name: 'name',
+    createdAt: 'createdAt',
+  };
+  protected rootFilterConfig = {
+    filterableFields: { id: 'id', asset_tag: 'asset_tag', status: 'status' },
+  };
 
   constructor(
     @InjectRepository(Asset)
@@ -19,14 +26,14 @@ export class AssetsRepository extends BaseRepository<Asset, any, any> {
 
   async findById(id: string): Promise<Asset | null> {
     return this.repository.findOne({
-      where: { id } as any,
+      where: { id },
       relations: { category: true },
     });
   }
 
   async findByTag(asset_tag: string): Promise<Asset | null> {
     return this.repository.findOne({
-      where: { asset_tag } as any,
+      where: { asset_tag },
       relations: { category: true },
     });
   }
@@ -46,7 +53,9 @@ export class AssetsRepository extends BaseRepository<Asset, any, any> {
     }
 
     if (filters.category_id) {
-      qb.andWhere('asset.category_id = :category_id', { category_id: filters.category_id });
+      qb.andWhere('asset.category_id = :category_id', {
+        category_id: filters.category_id,
+      });
     }
 
     if (filters.is_shared_bookable !== undefined) {
@@ -56,7 +65,9 @@ export class AssetsRepository extends BaseRepository<Asset, any, any> {
     }
 
     if (filters.location) {
-      qb.andWhere('asset.location ILIKE :location', { location: `%${filters.location}%` });
+      qb.andWhere('asset.location ILIKE :location', {
+        location: `%${filters.location}%`,
+      });
     }
 
     if (filters.search) {

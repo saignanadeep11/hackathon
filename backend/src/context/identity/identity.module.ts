@@ -6,9 +6,19 @@ import { CoreModule } from '../core/core.module';
 import { AssetMasterModule } from '../asset-master/asset-master.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, DepartmentsModule,AssetMasterModule,
-    CoreModule,],
-  exports: [AuthModule, UsersModule, DepartmentsModule,AssetMasterModule,
-    CoreModule,],
+  imports: [
+    AuthModule,
+    UsersModule,
+    DepartmentsModule,
+    AssetMasterModule,
+    CoreModule,
+  ],
+  exports: [
+    AuthModule,
+    UsersModule,
+    DepartmentsModule,
+    AssetMasterModule,
+    CoreModule,
+  ],
 })
 export class IdentityModule {}

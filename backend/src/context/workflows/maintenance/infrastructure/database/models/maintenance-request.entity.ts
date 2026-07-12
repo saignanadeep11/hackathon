@@ -1,7 +1,10 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { v7 as uuidv7 } from 'uuid';
-import { MaintenanceStatus, MaintenancePriority } from '../../../../../../common/enums/database.enums';
+import {
+  MaintenanceStatus,
+  MaintenancePriority,
+} from '../../../../../../common/enums/database.enums';
 import { Asset } from '../../../../../asset-master/assets/infrastructure/database/models/asset.entity';
 import { User } from '../../../../../identity/users/infrastructure/database/models/user.entity';
 
@@ -39,7 +42,11 @@ export class MaintenanceRequest {
   description: string;
 
   @Field(() => MaintenancePriority)
-  @Column({ type: 'enum', enum: MaintenancePriority, default: MaintenancePriority.MEDIUM })
+  @Column({
+    type: 'enum',
+    enum: MaintenancePriority,
+    default: MaintenancePriority.MEDIUM,
+  })
   priority: MaintenancePriority;
 
   @Field(() => String, { nullable: true })
@@ -47,6 +54,10 @@ export class MaintenanceRequest {
   photo_url: string;
 
   @Field(() => MaintenanceStatus)
-  @Column({ type: 'enum', enum: MaintenanceStatus, default: MaintenanceStatus.PENDING })
+  @Column({
+    type: 'enum',
+    enum: MaintenanceStatus,
+    default: MaintenanceStatus.PENDING,
+  })
   status: MaintenanceStatus;
 }

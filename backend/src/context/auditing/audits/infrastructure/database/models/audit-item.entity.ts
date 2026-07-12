@@ -18,7 +18,7 @@ export class AuditItem {
   audit_cycle_id: string;
 
   @Field(() => AuditCycle)
-  @ManyToOne(() => AuditCycle, cycle => cycle.items)
+  @ManyToOne(() => AuditCycle, (cycle) => cycle.items)
   @JoinColumn({ name: 'audit_cycle_id' })
   audit_cycle: AuditCycle;
 
@@ -41,7 +41,11 @@ export class AuditItem {
   auditor: User;
 
   @Field(() => AuditItemStatus)
-  @Column({ type: 'enum', enum: AuditItemStatus, default: AuditItemStatus.VERIFIED })
+  @Column({
+    type: 'enum',
+    enum: AuditItemStatus,
+    default: AuditItemStatus.VERIFIED,
+  })
   verification_status: AuditItemStatus;
 
   @Field(() => String, { nullable: true })

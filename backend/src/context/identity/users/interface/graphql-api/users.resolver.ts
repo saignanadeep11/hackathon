@@ -23,7 +23,9 @@ export class UsersResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => User)
-  async promoteToAdmin(@Args('id', { type: () => String }) id: string): Promise<User> {
+  async promoteToAdmin(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<User> {
     // Note: We use dynamic role import or pass enum directly, assuming UserRole.ADMIN is available,
     // but to avoid import issues, we can just pass 'ADMIN' as any
     return this.usersService.updateRole(id, 'ADMIN' as any);
@@ -31,7 +33,9 @@ export class UsersResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => User)
-  async promoteToDeptHead(@Args('id', { type: () => String }) id: string): Promise<User> {
+  async promoteToDeptHead(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<User> {
     return this.usersService.updateRole(id, 'DEPARTMENT_HEAD' as any);
   }
 }

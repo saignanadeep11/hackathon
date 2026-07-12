@@ -10,7 +10,6 @@ export const envSchema = z.object({
   JWT_SECRET: z.string().default('super-secret-hackathon-key'),
 });
 
-
 export type EnvConfig = z.infer<typeof envSchema>;
 
 export function validateEnv(config: Record<string, unknown>) {

@@ -1,5 +1,13 @@
 import { InputType, Field, Float } from '@nestjs/graphql';
-import { IsNotEmpty, IsString, IsUUID, IsDate, IsNumber, IsBoolean, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  IsDate,
+  IsNumber,
+  IsBoolean,
+  IsOptional,
+} from 'class-validator';
 
 @InputType()
 export class RegisterAssetInput {

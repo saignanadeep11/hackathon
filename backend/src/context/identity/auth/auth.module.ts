@@ -15,7 +15,9 @@ import { UsersModule } from '../users/users.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || 'super-secret-hackathon-key',
+        secret:
+          configService.get<string>('JWT_SECRET') ||
+          'super-secret-hackathon-key',
         signOptions: { expiresIn: '7d' },
       }),
     }),

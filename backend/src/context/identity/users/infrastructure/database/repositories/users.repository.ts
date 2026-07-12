@@ -8,7 +8,9 @@ import { User } from '../models/user.entity';
 export class UsersRepository extends BaseRepository<User, any, any> {
   protected dtoClass = class {} as any;
   protected sortableFields = { id: 'id', email: 'email' };
-  protected rootFilterConfig = { filterableFields: { id: 'id', email: 'email' } };
+  protected rootFilterConfig = {
+    filterableFields: { id: 'id', email: 'email' },
+  };
 
   constructor(
     @InjectRepository(User)
@@ -18,11 +20,11 @@ export class UsersRepository extends BaseRepository<User, any, any> {
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.repository.findOne({ where: { id } as any });
+    return this.repository.findOne({ where: { id } });
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.repository.findOne({ where: { email } as any });
+    return this.repository.findOne({ where: { email } });
   }
 
   async fetchAllUsers(): Promise<User[]> {
