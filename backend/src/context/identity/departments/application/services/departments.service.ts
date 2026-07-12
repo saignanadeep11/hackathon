@@ -12,7 +12,9 @@ export class DepartmentsService {
   ) {}
 
   async findAll(): Promise<Department[]> {
-    return this.departmentRepository.find({ relations: { head: true, parent_department: true } });
+    return this.departmentRepository.find({
+      relations: { head: true, parent_department: true },
+    });
   }
 
   async findOne(id: string): Promise<Department> {
@@ -26,7 +28,11 @@ export class DepartmentsService {
     return department;
   }
 
-  async create(name: string, head_id?: string, parent_department_id?: string): Promise<Department> {
+  async create(
+    name: string,
+    head_id?: string,
+    parent_department_id?: string,
+  ): Promise<Department> {
     const department = this.departmentRepository.create({
       name,
       head_id,

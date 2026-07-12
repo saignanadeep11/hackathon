@@ -25,7 +25,7 @@ export class UsersRepository extends BaseRepository<User, any, any> {
     return this.repository.findOne({ where: { email } as any });
   }
 
-  async fetchAllUsers(): Promise<User[]> {
+  async findAllUsers(): Promise<User[]> {
     return this.repository.find({ relations: { department: true } });
   }
 
