@@ -22,7 +22,9 @@ import { ROUTE_PERMISSIONS } from 'src/config/permissions';
 export default route((/* { store, ssrContext } */) => {
   const createHistory = import.meta.env.QUASAR_SERVER
     ? createMemoryHistory
-    : (import.meta.env.QUASAR_VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    : import.meta.env.QUASAR_VUE_ROUTER_MODE === 'history'
+      ? createWebHistory
+      : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -31,14 +33,14 @@ export default route((/* { store, ssrContext } */) => {
     // Leave this as is and make changes in quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
-    history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE)
+    history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE),
   });
 
   Router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
-    const requiresAuth = to.matched.some(r => r.meta.requiresAuth);
-    const isGuestOnly  = to.matched.some(r => r.meta.guest);
-    
+    const requiresAuth = to.matched.some((r) => r.meta.requiresAuth);
+    const isGuestOnly = to.matched.some((r) => r.meta.guest);
+
     // Redirect logged-in users away from /login
     if (isGuestOnly && authStore.isLoggedIn) {
       return next('/dashboard');

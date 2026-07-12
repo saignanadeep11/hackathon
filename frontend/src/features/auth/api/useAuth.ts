@@ -1,10 +1,7 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth.store';
 import { useMutation } from '@vue/apollo-composable';
-import {
-  LoginDocument,
-  RegisterDocument,
-} from 'src/graphql/generated/graphql';
+import { LoginDocument, RegisterDocument } from 'src/graphql/generated/graphql';
 import type { AuthUser } from '../types/auth.types';
 
 export function useAuth() {
@@ -12,7 +9,11 @@ export function useAuth() {
   const authStore = useAuthStore();
 
   // ── Login ─────────────────────────────────────────────────────
-  const { mutate: loginMutate, loading: loginLoading, error: loginError } = useMutation(LoginDocument);
+  const {
+    mutate: loginMutate,
+    loading: loginLoading,
+    error: loginError,
+  } = useMutation(LoginDocument);
 
   async function login(email: string, password: string) {
     const result = await loginMutate({ input: { email, password } });
@@ -24,7 +25,11 @@ export function useAuth() {
   }
 
   // ── Register ──────────────────────────────────────────────────
-  const { mutate: registerMutate, loading: registerLoading, error: registerError } = useMutation(RegisterDocument);
+  const {
+    mutate: registerMutate,
+    loading: registerLoading,
+    error: registerError,
+  } = useMutation(RegisterDocument);
 
   async function register(name: string, email: string, password: string) {
     const result = await registerMutate({ input: { name, email, password } });
@@ -42,8 +47,12 @@ export function useAuth() {
   }
 
   return {
-    login, loginLoading, loginError,
-    register, registerLoading, registerError,
+    login,
+    loginLoading,
+    loginError,
+    register,
+    registerLoading,
+    registerError,
     logout,
   };
 }

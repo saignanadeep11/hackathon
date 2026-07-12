@@ -4,13 +4,15 @@ import type { AuthUser } from 'src/features/auth/types/auth.types';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: localStorage.getItem('assetflow_access_token') || null as string | null,
-    user: localStorage.getItem('assetflow_user') ? JSON.parse(localStorage.getItem('assetflow_user')!) : null as AuthUser | null,
+    token: localStorage.getItem('assetflow_access_token') || (null as string | null),
+    user: localStorage.getItem('assetflow_user')
+      ? JSON.parse(localStorage.getItem('assetflow_user')!)
+      : (null as AuthUser | null),
   }),
   getters: {
-    isLoggedIn:    (state) => !!state.token,
-    currentRole:   (state) => state.user?.role ?? null,
-    currentUser:   (state) => state.user,
+    isLoggedIn: (state) => !!state.token,
+    currentRole: (state) => state.user?.role ?? null,
+    currentUser: (state) => state.user,
   },
   actions: {
     setSession(token: string, user: AuthUser) {

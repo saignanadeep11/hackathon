@@ -17,4 +17,15 @@ export class UsersService {
   async create(user: Partial<User>): Promise<User> {
     return this.usersRepository.createOne(user);
   }
+
+  async findAll(): Promise<User[]> {
+    return this.usersRepository.fetchAllUsers();
+  }
+
+  async updateRole(id: string, role: any): Promise<User> {
+    const user = await this.usersRepository.findById(id);
+    if (!user) throw new Error('User not found');
+    user.role = role;
+    return this.usersRepository.save(user);
+  }
 }

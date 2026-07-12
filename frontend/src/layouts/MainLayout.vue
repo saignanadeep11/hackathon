@@ -69,52 +69,108 @@ const authStore = useAuthStore();
 const { logout } = useAuth();
 
 const visibleNavItems = computed(() =>
-  NAV_ITEMS.filter(item =>
-    item.roles.length === 0 || (authStore.currentRole && item.roles.includes(authStore.currentRole))
-  )
+  NAV_ITEMS.filter(
+    (item) =>
+      item.roles.length === 0 ||
+      (authStore.currentRole && item.roles.includes(authStore.currentRole)),
+  ),
 );
 
 const userInitials = computed(() => {
   const name = authStore.currentUser?.name || '';
-  return name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+  return name
+    .split(' ')
+    .map((n: string) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 });
 
-
-
 const roleLabel = computed(() =>
-  authStore.currentRole ? ROLE_LABELS[authStore.currentRole as keyof typeof ROLE_LABELS] : ''
+  authStore.currentRole ? ROLE_LABELS[authStore.currentRole as keyof typeof ROLE_LABELS] : '',
 );
 
-async function handleLogout() { await logout(); }
+async function handleLogout() {
+  await logout();
+}
 </script>
 
 <style lang="scss" scoped>
-.app-layout { background: $dark-page; }
+.app-layout {
+  background: $dark-page;
+}
 
 .app-sidebar {
   background: $dark-card !important;
   border-right: 1px solid $glass-border !important;
 
-  .sidebar-brand { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid $glass-border;
-    .brand-icon { width: 36px; height: 36px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3);
-      border-radius: $radius-sm; display: flex; align-items: center; justify-content: center; }
-    .brand-text { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
-  }
-
-  .sidebar-nav { flex: 1;
-    .nav-item { border-radius: $radius-sm; margin-bottom: 2px; color: $grey-5; min-height: 40px; font-size: 14px;
-      &:hover { background: rgba(255,255,255,0.04); color: #fff; }
-      &--active { background: rgba(59,130,246,0.12) !important; color: $primary !important;
-        border-left: 3px solid $primary; }
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid $glass-border;
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: $radius-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
     }
   }
 
-  .sidebar-footer { border-top: 1px solid $glass-border; margin-top: auto;
-    .user-info { display: flex; align-items: center; }
-    .user-name { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.2; }
-    .user-role { font-size: 11px; color: $grey-5; }
-    .logout-btn { color: $grey-5; font-size: 13px; justify-content: flex-start;
-      &:hover { color: $negative; }
+  .sidebar-nav {
+    flex: 1;
+    .nav-item {
+      border-radius: $radius-sm;
+      margin-bottom: 2px;
+      color: $grey-5;
+      min-height: 40px;
+      font-size: 14px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+        color: #fff;
+      }
+      &--active {
+        background: rgba(59, 130, 246, 0.12) !important;
+        color: $primary !important;
+        border-left: 3px solid $primary;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    border-top: 1px solid $glass-border;
+    margin-top: auto;
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .user-role {
+      font-size: 11px;
+      color: $grey-5;
+    }
+    .logout-btn {
+      color: $grey-5;
+      font-size: 13px;
+      justify-content: flex-start;
+      &:hover {
+        color: $negative;
+      }
     }
   }
 }

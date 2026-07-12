@@ -14,10 +14,11 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}": typeof types.LoginDocument,
+  'mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}': typeof types.LoginDocument;
 };
 const documents: Documents = {
-    "mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}": types.LoginDocument,
+  'mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}':
+    types.LoginDocument,
 };
 
 /**
@@ -37,10 +38,13 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}"): (typeof documents)["mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}"];
+export function graphql(
+  source: 'mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}',
+): (typeof documents)['mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nmutation Register($input: RegisterInput!) {\n  register(input: $input) {\n    accessToken\n    user {\n      id\n      name\n      email\n      role\n      status\n    }\n  }\n}\n\nquery Me {\n  me {\n    id\n    name\n    email\n    role\n    status\n  }\n}'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
+  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never;

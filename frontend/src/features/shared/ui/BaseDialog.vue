@@ -13,13 +13,7 @@
 
       <q-card-actions align="right" class="text-primary">
         <q-btn flat label="Cancel" v-close-popup />
-        <q-btn
-          flat
-          label="Save"
-          color="primary"
-          :loading="loading"
-          @click="$emit('save')"
-        />
+        <q-btn flat label="Save" color="primary" :loading="loading" @click="$emit('save')" />
       </q-card-actions>
     </q-card>
   </q-dialog>

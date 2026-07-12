@@ -8,13 +8,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { IdentityModule } from './context/identity/identity.module';
+import { AssetMasterModule } from './context/asset-master/asset-master.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
     IdentityModule,
+    AssetMasterModule,
     ConfigModule.forRoot({
+
       validate: validateEnv,
       isGlobal: true,
     }),
