@@ -1,5 +1,34 @@
 <template>
   <div class="employee-tab-container">
+    <!-- Filter Bar -->
+    <q-card class="bg-dark-card glass-border q-mb-md q-pa-md">
+      <div class="row q-col-gutter-md items-center">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="searchQuery"
+            placeholder="Search Employees..."
+            dense
+            outlined
+            dark
+            @keyup.enter="emit('apply-filter', searchQuery.trim())"
+          >
+            <template v-slot:prepend>
+              <lucide-icon name="search" :size="18" class="text-grey-5" />
+            </template>
+          </q-input>
+        </div>
+        <div class="col-12 col-md-6 flex justify-end q-gutter-sm">
+          <q-btn flat color="grey-5" no-caps label="Clear" @click="clearFilters" />
+          <q-btn
+            color="primary"
+            no-caps
+            label="Search"
+            @click="emit('apply-filter', searchQuery.trim())"
+          />
+        </div>
+      </div>
+    </q-card>
+
     <q-table
       flat
       class="transparent-table"
@@ -10,35 +39,58 @@
       :loading="loading"
       :rows-per-page-options="[0]"
     >
+      <template v-slot:body-cell-status="props">
+        <q-td :props="props" class="text-center">
+          <div
+            class="status-pill"
+            :class="props.row.status === 'ACTIVE' ? 'status-active' : 'status-inactive'"
+          >
+            {{ props.row.status === 'ACTIVE' ? 'Active' : 'Inactive' }}
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-actions="props">
         <q-td :props="props" class="text-right">
           <q-btn
-            v-if="props.row.role !== 'ADMIN'"
             outline
             color="primary"
             size="sm"
-            label="Promote to Admin"
+            label="Edit"
             no-caps
-            class="q-mr-sm"
-            @click="emit('promote', props.row.id)"
-          />
-          <q-btn
-            v-if="props.row.role !== 'DEPARTMENT_HEAD' && props.row.role !== 'ADMIN'"
-            outline
-            color="secondary"
-            size="sm"
-            label="Promote to Dept Head"
-            no-caps
-            @click="emit('promote-dept-head', props.row.id)"
+            @click="emit('edit-employee', props.row)"
           />
         </q-td>
       </template>
     </q-table>
+
+    <!-- Pagination Footer -->
+    <div class="row justify-between items-center q-mt-md" v-if="pageInfo">
+      <div class="text-grey-5">Showing {{ users?.length || 0 }} of {{ totalCount }}</div>
+      <div class="q-gutter-sm">
+        <q-btn
+          outline
+          color="primary"
+          label="Previous"
+          @click="emit('load-prev')"
+          :disable="!pageInfo.hasPreviousPage"
+          :loading="loading"
+        />
+        <q-btn
+          outline
+          color="primary"
+          label="Next"
+          @click="emit('load-next')"
+          :disable="!pageInfo.hasNextPage"
+          :loading="loading"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import type { QTableColumn } from 'quasar';
 
 interface User {
@@ -46,15 +98,32 @@ interface User {
   name: string;
   email: string;
   role: string;
-  department?: { name: string };
+  status: string;
+  department?: { id?: string; name: string } | null;
+}
+
+interface PageInfo {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor?: string | null;
+  endCursor?: string | null;
 }
 
 const props = defineProps<{
   users?: User[];
   loading: boolean;
+  pageInfo?: PageInfo | null | undefined;
+  totalCount?: number;
 }>();
 
-const emit = defineEmits(['promote', 'promote-dept-head']);
+const emit = defineEmits(['edit-employee', 'load-next', 'load-prev', 'apply-filter']);
+
+const searchQuery = ref('');
+
+function clearFilters() {
+  searchQuery.value = '';
+  emit('apply-filter', '');
+}
 
 const columns: QTableColumn[] = [
   { name: 'name', label: 'Employee', align: 'left', field: 'name' },
@@ -66,6 +135,7 @@ const columns: QTableColumn[] = [
     field: (row: User) => row.department?.name || '--',
   },
   { name: 'role', label: 'Role', align: 'left', field: 'role' },
+  { name: 'status', label: 'Status', align: 'center', field: 'status' },
   { name: 'actions', label: 'Actions', align: 'right', field: 'actions' },
 ];
 
@@ -85,5 +155,31 @@ const rows = computed(() => props.users || []);
   :deep(td) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
+}
+
+.status-pill {
+  border-radius: 20px;
+  padding: 4px 16px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid currentColor;
+}
+.status-active {
+  color: $positive;
+  background: rgba(33, 186, 69, 0.1);
+}
+.status-inactive {
+  color: $grey-5;
+  background: rgba(158, 158, 158, 0.1);
+}
+
+.glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bg-dark-card {
+  background: rgba(19, 27, 46, 0.95);
+  backdrop-filter: blur(20px);
 }
 </style>

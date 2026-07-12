@@ -87,7 +87,9 @@
           </div>
           <div class="kpi-bar">
             <q-linear-progress
-              :value="metrics.totalAssets > 0 ? metrics.underMaintenanceAssets / metrics.totalAssets : 0"
+              :value="
+                metrics.totalAssets > 0 ? metrics.underMaintenanceAssets / metrics.totalAssets : 0
+              "
               color="purple"
               track-color="transparent"
               size="3px"
@@ -105,9 +107,15 @@
           <div class="alert-label">Pending Approvals</div>
         </div>
 
-        <div class="alert-card" :class="metrics.overdueAllocations > 0 ? 'alert-card--overdue' : 'alert-card--ok'">
+        <div
+          class="alert-card"
+          :class="metrics.overdueAllocations > 0 ? 'alert-card--overdue' : 'alert-card--ok'"
+        >
           <lucide-icon name="alert-triangle" :size="20" class="alert-icon" />
-          <div class="alert-value" :class="metrics.overdueAllocations > 0 ? 'text-negative' : 'text-positive'">
+          <div
+            class="alert-value"
+            :class="metrics.overdueAllocations > 0 ? 'text-negative' : 'text-positive'"
+          >
             {{ metrics.overdueAllocations }}
           </div>
           <div class="alert-label">Overdue Returns</div>
@@ -168,30 +176,20 @@
           </q-card-section>
 
           <q-list v-if="metrics.recentActivityLogs.length > 0" separator>
-            <q-item
-              v-for="log in metrics.recentActivityLogs"
-              :key="log.id"
-              class="feed-item"
-              dense
-            >
+            <q-item v-for="log in metrics.recentActivityLogs" :key="log.id" class="feed-item" dense>
               <q-item-section avatar style="min-width: 32px">
                 <div class="feed-dot" :class="`feed-dot--${log.type.toLowerCase()}`" />
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-grey-3" style="font-size: 13px; line-height: 1.4">
-                  {{ log.message }}
+                  {{ formatLogMessage(log.message) }}
                 </q-item-label>
                 <q-item-label caption class="text-grey-7">
                   {{ log.actor?.name }} · {{ formatTime(log.created_at) }}
                 </q-item-label>
               </q-item-section>
               <q-item-section side style="min-width: 60px">
-                <q-chip
-                  :color="typeColor(log.type)"
-                  text-color="white"
-                  dense
-                  size="xs"
-                >
+                <q-chip :color="typeColor(log.type)" text-color="white" dense size="xs">
                   {{ log.type }}
                 </q-chip>
               </q-item-section>
@@ -211,6 +209,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useDashboard } from 'src/features/dashboard/api/useDashboard';
+import { formatLogMessage } from 'src/features/notifications/ui/utils';
 
 const { metrics, loading, refetch } = useDashboard();
 
@@ -218,26 +217,59 @@ const utilizationSegments = computed(() => {
   if (!metrics.value) return [];
   const total = metrics.value.totalAssets || 1;
   return [
-    { label: 'Available', count: metrics.value.availableAssets, color: 'positive', hex: '#10b981', pct: Math.round((metrics.value.availableAssets / total) * 100) },
-    { label: 'Allocated', count: metrics.value.allocatedAssets, color: 'primary', hex: '#3b82f6', pct: Math.round((metrics.value.allocatedAssets / total) * 100) },
-    { label: 'Under Maintenance', count: metrics.value.underMaintenanceAssets, color: 'purple', hex: '#a855f7', pct: Math.round((metrics.value.underMaintenanceAssets / total) * 100) },
+    {
+      label: 'Available',
+      count: metrics.value.availableAssets,
+      color: 'positive',
+      hex: '#10b981',
+      pct: Math.round((metrics.value.availableAssets / total) * 100),
+    },
+    {
+      label: 'Allocated',
+      count: metrics.value.allocatedAssets,
+      color: 'primary',
+      hex: '#3b82f6',
+      pct: Math.round((metrics.value.allocatedAssets / total) * 100),
+    },
+    {
+      label: 'Under Maintenance',
+      count: metrics.value.underMaintenanceAssets,
+      color: 'purple',
+      hex: '#a855f7',
+      pct: Math.round((metrics.value.underMaintenanceAssets / total) * 100),
+    },
     {
       label: 'Other',
-      count: total - metrics.value.availableAssets - metrics.value.allocatedAssets - metrics.value.underMaintenanceAssets,
+      count:
+        total -
+        metrics.value.availableAssets -
+        metrics.value.allocatedAssets -
+        metrics.value.underMaintenanceAssets,
       color: 'grey-7',
       hex: '#475569',
-      pct: Math.max(0, 100 - Math.round((metrics.value.availableAssets / total) * 100) - Math.round((metrics.value.allocatedAssets / total) * 100) - Math.round((metrics.value.underMaintenanceAssets / total) * 100)),
+      pct: Math.max(
+        0,
+        100 -
+          Math.round((metrics.value.availableAssets / total) * 100) -
+          Math.round((metrics.value.allocatedAssets / total) * 100) -
+          Math.round((metrics.value.underMaintenanceAssets / total) * 100),
+      ),
     },
   ].filter((s) => s.count > 0);
 });
 
 function typeColor(type: string): string {
   switch (type) {
-    case 'ALLOCATION': return 'primary';
-    case 'BOOKING': return 'positive';
-    case 'MAINTENANCE': return 'purple';
-    case 'AUDIT': return 'warning';
-    default: return 'grey-7';
+    case 'ALLOCATION':
+      return 'primary';
+    case 'BOOKING':
+      return 'positive';
+    case 'MAINTENANCE':
+      return 'purple';
+    case 'AUDIT':
+      return 'warning';
+    default:
+      return 'grey-7';
   }
 }
 
@@ -279,21 +311,33 @@ function formatTime(iso: unknown): string {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 2px;
   }
 
-  &--total::before { background: $grey-7; }
-  &--available::before { background: $positive; }
-  &--allocated::before { background: $primary; }
-  &--maintenance::before { background: #a855f7; }
+  &--total::before {
+    background: $grey-7;
+  }
+  &--available::before {
+    background: $positive;
+  }
+  &--allocated::before {
+    background: $primary;
+  }
+  &--maintenance::before {
+    background: #a855f7;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -348,17 +392,43 @@ function formatTime(iso: unknown): string {
   text-align: center;
   transition: transform 0.2s ease;
 
-  &--pending { border-color: rgba(245, 158, 11, 0.3); }
-  &--overdue { border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.04); }
-  &--ok { border-color: rgba(16, 185, 129, 0.3); }
-  &--bookings { border-color: rgba(16, 185, 129, 0.3); }
-  &--total-bookings { border-color: $glass-border; }
+  &--pending {
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+  &--overdue {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.04);
+  }
+  &--ok {
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  &--bookings {
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  &--total-bookings {
+    border-color: $glass-border;
+  }
 
-  &:hover { transform: translateY(-2px); }
+  &:hover {
+    transform: translateY(-2px);
+  }
 
-  .alert-icon { color: $grey-5; margin-bottom: 8px; }
-  .alert-value { font-size: 28px; font-weight: 700; line-height: 1.1; }
-  .alert-label { font-size: 12px; color: $grey-6; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .alert-icon {
+    color: $grey-5;
+    margin-bottom: 8px;
+  }
+  .alert-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .alert-label {
+    font-size: 12px;
+    color: $grey-6;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 }
 
 // Bottom Grid
@@ -399,9 +469,17 @@ function formatTime(iso: unknown): string {
   border-radius: 50%;
   margin-top: 4px;
 
-  &--allocation { background: $primary; }
-  &--booking { background: $positive; }
-  &--maintenance { background: #a855f7; }
-  &--audit { background: $warning; }
+  &--allocation {
+    background: $primary;
+  }
+  &--booking {
+    background: $positive;
+  }
+  &--maintenance {
+    background: #a855f7;
+  }
+  &--audit {
+    background: $warning;
+  }
 }
 </style>

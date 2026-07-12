@@ -4,7 +4,9 @@
     <div class="row items-center justify-between q-mb-lg">
       <div>
         <h1 class="text-h4 font-bold q-my-none text-white">Resource Booking</h1>
-        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Book shared company resources (rooms, vehicles, projectors) and avoid schedule overlaps.</p>
+        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">
+          Book shared company resources (rooms, vehicles, projectors) and avoid schedule overlaps.
+        </p>
       </div>
       <div class="row items-center q-gutter-x-md">
         <!-- View Toggle -->
@@ -16,7 +18,7 @@
           dense
           :options="[
             { label: 'Calendar', value: 'calendar' },
-            { label: 'List View', value: 'list' }
+            { label: 'List View', value: 'list' },
           ]"
         />
         <q-btn
@@ -62,11 +64,7 @@
       <div :class="viewMode === 'calendar' ? 'col-12 col-md-8' : 'col-12'">
         <!-- 1. Calendar / Timeline View -->
         <div v-if="viewMode === 'calendar'" class="q-gutter-y-md">
-          <q-card
-            v-for="asset in bookableAssets"
-            :key="asset.id"
-            class="q-card--glass q-pa-md"
-          >
+          <q-card v-for="asset in bookableAssets" :key="asset.id" class="q-card--glass q-pa-md">
             <div class="row items-center justify-between q-mb-md">
               <div class="row items-center">
                 <lucide-icon name="monitor" :size="20" class="text-primary q-mr-sm" />
@@ -77,20 +75,17 @@
                   </div>
                 </div>
               </div>
-              <q-btn
-                outline
-                color="primary"
-                no-caps
-                size="sm"
-                @click="openNewBookingDialog(asset)"
-              >
+              <q-btn outline color="primary" no-caps size="sm" @click="openNewBookingDialog(asset)">
                 Book This
               </q-btn>
             </div>
 
             <!-- Booking timeline block for selected date -->
             <div class="timeline-container bg-dark-page q-pa-sm rounded-borders">
-              <div v-if="getBookingsForAssetAndDate(asset.id).length === 0" class="text-caption text-grey-6 text-center py-2">
+              <div
+                v-if="getBookingsForAssetAndDate(asset.id).length === 0"
+                class="text-caption text-grey-6 text-center py-2"
+              >
                 No bookings scheduled for today. Available all day.
               </div>
               <div v-else class="q-gutter-y-sm">
@@ -119,7 +114,10 @@
                       {{ booking.status }}
                     </q-chip>
                     <q-btn
-                      v-if="booking.status === 'UPCOMING' && (isManager || booking.booked_by_user?.id === currentUser?.id)"
+                      v-if="
+                        booking.status === 'UPCOMING' &&
+                        (isManager || booking.booked_by_user?.id === currentUser?.id)
+                      "
                       flat
                       round
                       dense
@@ -186,7 +184,7 @@
                   dense
                   square
                   class="text-uppercase text-weight-bold"
-                  style="font-size: 10px;"
+                  style="font-size: 10px"
                 >
                   {{ props.row.status }}
                 </q-chip>
@@ -196,7 +194,10 @@
             <template v-slot:body-cell-actions="props">
               <q-td :props="props" class="text-right">
                 <q-btn
-                  v-if="props.row.status === 'UPCOMING' && (isManager || props.row.booked_by_user?.id === currentUser?.id)"
+                  v-if="
+                    props.row.status === 'UPCOMING' &&
+                    (isManager || props.row.booked_by_user?.id === currentUser?.id)
+                  "
                   color="negative"
                   flat
                   no-caps
@@ -217,7 +218,10 @@
 
     <!-- Booking Dialog -->
     <q-dialog v-model="bookingDialogValues.open" persistent>
-      <q-card class="q-card--glass text-white q-pa-md" style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <q-card
+        class="q-card--glass text-white q-pa-md"
+        style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1)"
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 font-bold">Request Time Slot Booking</div>
           <q-space />
@@ -226,7 +230,10 @@
 
         <q-card-section>
           <!-- Error banner for overlap conflicts -->
-          <div v-if="submitError" class="q-mb-md q-pa-sm bg-negative text-white rounded-borders row items-center">
+          <div
+            v-if="submitError"
+            class="q-mb-md q-pa-sm bg-negative text-white rounded-borders row items-center"
+          >
             <lucide-icon name="alert-triangle" :size="18" class="q-mr-sm" />
             <div class="text-caption col">{{ submitError }}</div>
           </div>
@@ -242,7 +249,7 @@
               map-options
               emit-value
               required
-              :rules="[v => !!v || 'Resource selection is required']"
+              :rules="[(v) => !!v || 'Resource selection is required']"
             />
 
             <!-- Booking Date -->
@@ -253,7 +260,7 @@
               label="Booking Date"
               type="date"
               required
-              :rules="[v => !!v || 'Date is required']"
+              :rules="[(v) => !!v || 'Date is required']"
             />
 
             <!-- Start Time -->
@@ -264,7 +271,7 @@
               label="Start Time"
               type="time"
               required
-              :rules="[v => !!v || 'Start time is required']"
+              :rules="[(v) => !!v || 'Start time is required']"
             />
 
             <!-- End Time -->
@@ -275,12 +282,18 @@
               label="End Time"
               type="time"
               required
-              :rules="[v => !!v || 'End time is required']"
+              :rules="[(v) => !!v || 'End time is required']"
             />
 
             <div class="row justify-end q-mt-md">
               <q-btn label="Cancel" flat v-close-popup class="text-grey-4" />
-              <q-btn label="Reserve Slot" type="submit" color="primary" class="q-ml-sm" :loading="createLoading" />
+              <q-btn
+                label="Reserve Slot"
+                type="submit"
+                color="primary"
+                class="q-ml-sm"
+                :loading="createLoading"
+              />
             </div>
           </q-form>
         </q-card-section>
@@ -331,11 +344,16 @@ function formatDateTime(isoString: unknown) {
 
 function getStatusColor(status: string) {
   switch (status) {
-    case 'UPCOMING': return 'positive';
-    case 'ONGOING': return 'warning';
-    case 'COMPLETED': return 'primary';
-    case 'CANCELLED': return 'grey-7';
-    default: return 'primary';
+    case 'UPCOMING':
+      return 'positive';
+    case 'ONGOING':
+      return 'warning';
+    case 'COMPLETED':
+      return 'primary';
+    case 'CANCELLED':
+      return 'grey-7';
+    default:
+      return 'primary';
   }
 }
 
@@ -376,8 +394,12 @@ function openNewBookingDialog(asset: GetBookableAssetsQuery['bookableAssets'][nu
 async function submitBooking() {
   submitError.value = null;
   try {
-    const startIso = new Date(`${bookingDialogValues.value.date}T${bookingDialogValues.value.start_time}:00`);
-    const endIso = new Date(`${bookingDialogValues.value.date}T${bookingDialogValues.value.end_time}:00`);
+    const startIso = new Date(
+      `${bookingDialogValues.value.date}T${bookingDialogValues.value.start_time}:00`,
+    );
+    const endIso = new Date(
+      `${bookingDialogValues.value.date}T${bookingDialogValues.value.end_time}:00`,
+    );
 
     if (startIso >= endIso) {
       submitError.value = 'Start time must be before end time.';
@@ -415,10 +437,20 @@ async function handleCancelBooking(id: string) {
 
 // Table columns for list view
 const columns = [
-  { name: 'asset', label: 'Resource / Asset', field: (row: GetBookingsQuery['bookings'][number]) => row.asset?.name, align: 'left' as const },
+  {
+    name: 'asset',
+    label: 'Resource / Asset',
+    field: (row: GetBookingsQuery['bookings'][number]) => row.asset?.name,
+    align: 'left' as const,
+  },
   { name: 'start_time', label: 'Start Time', field: 'start_time', align: 'left' as const },
   { name: 'end_time', label: 'End Time', field: 'end_time', align: 'left' as const },
-  { name: 'booked_by', label: 'Booked By', field: (row: GetBookingsQuery['bookings'][number]) => row.booked_by_user?.name, align: 'left' as const },
+  {
+    name: 'booked_by',
+    label: 'Booked By',
+    field: (row: GetBookingsQuery['bookings'][number]) => row.booked_by_user?.name,
+    align: 'left' as const,
+  },
   { name: 'status', label: 'Status', field: 'status', align: 'center' as const },
   { name: 'actions', label: 'Actions', field: 'actions', align: 'right' as const },
 ];

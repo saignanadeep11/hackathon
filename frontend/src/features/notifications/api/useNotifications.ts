@@ -8,11 +8,15 @@ import {
 } from 'src/graphql/generated/graphql';
 
 export function useNotifications(filter: Ref<ActivityLogFilterInput> = ref({})) {
-  const { result, loading, error, refetch } = useQuery(GetActivityLogsDocument, () => ({
-    filter: filter.value,
-  }), {
-    fetchPolicy: 'network-only',
-  });
+  const { result, loading, error, refetch } = useQuery(
+    GetActivityLogsDocument,
+    () => ({
+      filter: filter.value,
+    }),
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
 
   const logs = computed(() => result.value?.activityLogs ?? []);
 
@@ -25,10 +29,14 @@ export function useNotifications(filter: Ref<ActivityLogFilterInput> = ref({})) 
 }
 
 export function useUnreadNotificationCount() {
-  const { result, loading, error, refetch } = useQuery(GetUnreadNotificationCountDocument, {}, {
-    pollInterval: 15000, // Poll every 15 seconds for notification bell count
-    fetchPolicy: 'network-only',
-  });
+  const { result, loading, error, refetch } = useQuery(
+    GetUnreadNotificationCountDocument,
+    {},
+    {
+      pollInterval: 15000, // Poll every 15 seconds for notification bell count
+      fetchPolicy: 'network-only',
+    },
+  );
 
   const unreadCount = computed(() => result.value?.unreadNotificationCount ?? 0);
 

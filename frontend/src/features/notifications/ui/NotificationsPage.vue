@@ -55,7 +55,7 @@
             <!-- Content -->
             <q-item-section>
               <q-item-label class="text-white" style="font-size: 14px; line-height: 1.4">
-                {{ log.message }}
+                {{ formatLogMessage(log.message) }}
               </q-item-label>
               <q-item-label caption class="q-mt-xs row items-center gap-sm">
                 <q-chip
@@ -86,7 +86,11 @@
           <lucide-icon name="activity" :size="48" class="text-grey-7 q-mb-md" />
           <p class="text-h6 text-grey-5 q-mb-sm">No activity logs found</p>
           <p class="text-caption text-grey-6">
-            {{ selectedType ? 'Try clearing the filter to see all logs.' : 'Actions on assets, bookings, and maintenance will appear here.' }}
+            {{
+              selectedType
+                ? 'Try clearing the filter to see all logs.'
+                : 'Actions on assets, bookings, and maintenance will appear here.'
+            }}
           </p>
         </div>
 
@@ -101,13 +105,17 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useNotifications, useMarkAllNotificationsRead } from 'src/features/notifications/api/useNotifications';
+import {
+  useNotifications,
+  useMarkAllNotificationsRead,
+} from 'src/features/notifications/api/useNotifications';
+import { formatLogMessage } from './utils';
 import type { ActivityLogFilterInput } from 'src/graphql/generated/graphql';
 
 const selectedType = ref<string | null>(null);
 
 const filter = computed<ActivityLogFilterInput>(() => ({
-  type: selectedType.value as ActivityLogFilterInput['type'] ?? undefined,
+  type: (selectedType.value as ActivityLogFilterInput['type']) ?? undefined,
 }));
 
 const { logs, loading, refetch } = useNotifications(filter);
@@ -124,21 +132,31 @@ const typeOptions = [
 
 function typeIcon(type: string): string {
   switch (type) {
-    case 'ALLOCATION': return 'package';
-    case 'BOOKING': return 'calendar';
-    case 'MAINTENANCE': return 'wrench';
-    case 'AUDIT': return 'clipboard-check';
-    default: return 'activity';
+    case 'ALLOCATION':
+      return 'package';
+    case 'BOOKING':
+      return 'calendar';
+    case 'MAINTENANCE':
+      return 'wrench';
+    case 'AUDIT':
+      return 'clipboard-check';
+    default:
+      return 'activity';
   }
 }
 
 function typeColor(type: string): string {
   switch (type) {
-    case 'ALLOCATION': return 'primary';
-    case 'BOOKING': return 'positive';
-    case 'MAINTENANCE': return 'purple';
-    case 'AUDIT': return 'warning';
-    default: return 'grey-7';
+    case 'ALLOCATION':
+      return 'primary';
+    case 'BOOKING':
+      return 'positive';
+    case 'MAINTENANCE':
+      return 'purple';
+    case 'AUDIT':
+      return 'warning';
+    default:
+      return 'grey-7';
   }
 }
 

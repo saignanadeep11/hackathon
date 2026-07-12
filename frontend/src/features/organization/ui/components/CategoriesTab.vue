@@ -63,7 +63,7 @@
           {{ props.value }}
         </q-td>
       </template>
-      
+
       <!-- Actions / Arrow indicator -->
       <template v-slot:body-cell-actions="props">
         <q-td :props="props" class="text-right cursor-pointer">
@@ -83,8 +83,22 @@
     <div class="row justify-between items-center q-mt-md" v-if="pageInfo">
       <div class="text-grey-5">Showing {{ categories.length }} of {{ totalCount }}</div>
       <div class="q-gutter-sm">
-        <q-btn outline color="primary" label="Previous" @click="loadPrev" :disable="!pageInfo.hasPreviousPage" :loading="loading" />
-        <q-btn outline color="primary" label="Next" @click="loadNext" :disable="!pageInfo.hasNextPage" :loading="loading" />
+        <q-btn
+          outline
+          color="primary"
+          label="Previous"
+          @click="loadPrev"
+          :disable="!pageInfo.hasPreviousPage"
+          :loading="loading"
+        />
+        <q-btn
+          outline
+          color="primary"
+          label="Next"
+          @click="loadNext"
+          :disable="!pageInfo.hasNextPage"
+          :loading="loading"
+        />
       </div>
     </div>
 
@@ -106,24 +120,38 @@
             <q-btn flat round dense icon="close" color="grey-5" @click="drawerOpen = false" />
           </div>
         </div>
-        
+
         <!-- Drawer Content -->
         <div class="flex-1 q-pa-md">
           <div class="text-subtitle2 text-grey-5 q-mb-md">Custom Fields Schema</div>
-          
-          <div v-if="!parsedSchema(selectedCategory) || parsedSchema(selectedCategory)?.fields.length === 0" class="text-grey-6 text-center q-pa-md">
+
+          <div
+            v-if="
+              !parsedSchema(selectedCategory) || parsedSchema(selectedCategory)?.fields.length === 0
+            "
+            class="text-grey-6 text-center q-pa-md"
+          >
             No custom fields defined.
           </div>
-          
+
           <div v-else class="q-gutter-y-sm">
-            <q-card v-for="field in parsedSchema(selectedCategory)?.fields" :key="field.name" dark flat bordered class="bg-dark-page q-pa-sm">
+            <q-card
+              v-for="field in parsedSchema(selectedCategory)?.fields"
+              :key="field.name"
+              dark
+              flat
+              bordered
+              class="bg-dark-page q-pa-sm"
+            >
               <div class="row items-center justify-between">
                 <div>
                   <div class="text-weight-bold text-white">{{ field.label }}</div>
                   <div class="text-caption text-grey-5 font-mono">{{ field.name }}</div>
                 </div>
                 <div class="column items-end">
-                  <q-badge :color="getTypeColor(field.type)" class="q-mb-xs">{{ field.type }}</q-badge>
+                  <q-badge :color="getTypeColor(field.type)" class="q-mb-xs">{{
+                    field.type
+                  }}</q-badge>
                   <q-badge v-if="field.required" color="negative" outline>Required</q-badge>
                 </div>
               </div>
@@ -138,7 +166,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { useCategoriesPage } from '../api/useCategories';
+import { useCategoriesPage } from '../../api/useCategories';
 import CreateCategoryModal from './CreateCategoryModal.vue';
 import EditCategoryModal from './EditCategoryModal.vue';
 
@@ -147,9 +175,10 @@ const $q = useQuasar();
 // Pagination State
 const searchQuery = ref('');
 
-const { variables, categories, totalCount, loading, refetch, fetchMore, pageInfo } = useCategoriesPage({
-  first: 10,
-});
+const { variables, categories, totalCount, loading, refetch, fetchMore, pageInfo } =
+  useCategoriesPage({
+    first: 10,
+  });
 
 function clearFilters() {
   searchQuery.value = '';
@@ -169,11 +198,11 @@ function applyFilters() {
       or: [
         {
           name: {
-            icontains: searchQuery.value.trim()
-          }
-        }
-      ]
-    }
+            icontains: searchQuery.value.trim(),
+          },
+        },
+      ],
+    },
   };
 }
 
@@ -184,7 +213,7 @@ function loadNext() {
       after: pageInfo.value.endCursor,
       before: undefined,
       first: 10,
-      last: undefined
+      last: undefined,
     },
     updateQuery: (prev, { fetchMoreResult }) => {
       if (!fetchMoreResult) return prev;
@@ -200,7 +229,7 @@ function loadPrev() {
       before: pageInfo.value.startCursor,
       after: undefined,
       last: 10,
-      first: undefined
+      first: undefined,
     },
     updateQuery: (prev, { fetchMoreResult }) => {
       if (!fetchMoreResult) return prev;
@@ -221,16 +250,16 @@ interface CustomField {
 
 const columns = [
   { name: 'name', label: 'Category Name', field: 'name', align: 'left' as const, sortable: true },
-  { 
-    name: 'custom_fields', 
-    label: 'Custom Fields', 
+  {
+    name: 'custom_fields',
+    label: 'Custom Fields',
     field: (row: Record<string, unknown>) => {
       const schema = parsedSchema(row);
       return schema?.fields?.length || 0;
     },
-    align: 'center' as const 
+    align: 'center' as const,
   },
-  { name: 'actions', label: '', field: 'actions', align: 'right' as const }
+  { name: 'actions', label: '', field: 'actions', align: 'right' as const },
 ];
 
 function parsedSchema(category: Record<string, unknown> | null): { fields: CustomField[] } | null {
@@ -247,10 +276,14 @@ function parsedSchema(category: Record<string, unknown> | null): { fields: Custo
 
 function getTypeColor(type: string) {
   switch (type) {
-    case 'text': return 'blue';
-    case 'number': return 'purple';
-    case 'boolean': return 'green';
-    default: return 'grey';
+    case 'text':
+      return 'blue';
+    case 'number':
+      return 'purple';
+    case 'boolean':
+      return 'green';
+    default:
+      return 'grey';
   }
 }
 
@@ -273,7 +306,7 @@ function openEditModal() {
     component: EditCategoryModal,
     componentProps: {
       category: selectedCategory.value,
-    }
+    },
   }).onOk(() => {
     void refetch();
     // Update selected category in drawer if still open, or close it
@@ -289,10 +322,20 @@ function openEditModal() {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 .glass-table {
-  :deep(.q-table__top) { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-  :deep(th) { font-weight: 600; color: $grey-4; border-bottom-color: rgba(255, 255, 255, 0.05); }
-  :deep(td) { border-bottom-color: rgba(255, 255, 255, 0.03); }
-  :deep(tbody tr:hover) { background: rgba(255, 255, 255, 0.03); }
+  :deep(.q-table__top) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  :deep(th) {
+    font-weight: 600;
+    color: $grey-4;
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+  }
+  :deep(td) {
+    border-bottom-color: rgba(255, 255, 255, 0.03);
+  }
+  :deep(tbody tr:hover) {
+    background: rgba(255, 255, 255, 0.03);
+  }
 }
 .bg-dark-card {
   background: rgba(19, 27, 46, 0.95);

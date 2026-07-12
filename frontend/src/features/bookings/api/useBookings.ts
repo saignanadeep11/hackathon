@@ -38,7 +38,11 @@ export function useBookableAssets() {
 }
 
 export function useCreateBooking() {
-  const { mutate: createMutate, loading: createLoading, error: createError } = useMutation(CreateBookingDocument);
+  const {
+    mutate: createMutate,
+    loading: createLoading,
+    error: createError,
+  } = useMutation(CreateBookingDocument);
 
   async function createBooking(input: CreateBookingInput) {
     const result = await createMutate({ input });
@@ -53,7 +57,11 @@ export function useCreateBooking() {
 }
 
 export function useCancelBooking() {
-  const { mutate: cancelMutate, loading: cancelLoading, error: cancelError } = useMutation(CancelBookingDocument);
+  const {
+    mutate: cancelMutate,
+    loading: cancelLoading,
+    error: cancelError,
+  } = useMutation(CancelBookingDocument);
 
   async function cancelBooking(id: string) {
     const result = await cancelMutate({ id });

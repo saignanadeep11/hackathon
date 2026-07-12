@@ -1,5 +1,34 @@
 <template>
   <div class="dept-tab-container">
+    <!-- Filter Bar -->
+    <q-card class="bg-dark-card glass-border q-mb-md q-pa-md">
+      <div class="row q-col-gutter-md items-center">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="searchQuery"
+            placeholder="Search Departments..."
+            dense
+            outlined
+            dark
+            @keyup.enter="emit('apply-filter', searchQuery.trim())"
+          >
+            <template v-slot:prepend>
+              <lucide-icon name="search" :size="18" class="text-grey-5" />
+            </template>
+          </q-input>
+        </div>
+        <div class="col-12 col-md-6 flex justify-end q-gutter-sm">
+          <q-btn flat color="grey-5" no-caps label="Clear" @click="clearFilters" />
+          <q-btn
+            color="primary"
+            no-caps
+            label="Search"
+            @click="emit('apply-filter', searchQuery.trim())"
+          />
+        </div>
+      </div>
+    </q-card>
+
     <q-table
       flat
       class="transparent-table"
@@ -42,6 +71,15 @@
       <template v-slot:body-cell-actions="props">
         <q-td :props="props" class="text-right">
           <q-btn
+            outline
+            color="primary"
+            size="sm"
+            label="Edit"
+            no-caps
+            class="q-mr-sm"
+            @click="emit('edit-dept', props.row)"
+          />
+          <q-btn
             v-if="props.row.status === 'INACTIVE'"
             outline
             color="positive"
@@ -62,6 +100,30 @@
         </q-td>
       </template>
     </q-table>
+
+    <!-- Pagination Footer -->
+    <div class="row justify-between items-center q-mt-md" v-if="pageInfo">
+      <div class="text-grey-5">Showing {{ departments?.length || 0 }} of {{ totalCount }}</div>
+      <div class="q-gutter-sm">
+        <q-btn
+          outline
+          color="primary"
+          label="Previous"
+          @click="emit('load-prev')"
+          :disable="!pageInfo.hasPreviousPage"
+          :loading="loading"
+        />
+        <q-btn
+          outline
+          color="primary"
+          label="Next"
+          @click="emit('load-next')"
+          :disable="!pageInfo.hasNextPage"
+          :loading="loading"
+        />
+      </div>
+    </div>
+
     <div class="q-mt-lg text-grey-5 text-caption" style="font-family: monospace">
       Editing a department here also drives the picklist in Screen 4 & 5
     </div>
@@ -69,8 +131,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import type { QTableColumn } from 'quasar';
+import type { GeneralStatus } from 'src/graphql/generated/graphql';
 
 interface User {
   id: string;
@@ -83,18 +146,41 @@ interface User {
 interface Department {
   id: string;
   name: string;
-  status: string;
-  head?: { name: string };
-  parent_department?: { name: string };
+  status: GeneralStatus;
+  head?: { id?: string; name?: string; email?: string } | null;
+  parent_department?: { id?: string; name?: string } | null;
+}
+
+interface PageInfo {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor?: string | null;
+  endCursor?: string | null;
 }
 
 const props = defineProps<{
   departments?: Department[];
   users?: User[];
   loading: boolean;
+  pageInfo?: PageInfo | null | undefined;
+  totalCount?: number;
 }>();
 
-const emit = defineEmits(['update-status', 'assign-head']);
+const emit = defineEmits([
+  'update-status',
+  'assign-head',
+  'edit-dept',
+  'load-next',
+  'load-prev',
+  'apply-filter',
+]);
+
+const searchQuery = ref('');
+
+function clearFilters() {
+  searchQuery.value = '';
+  emit('apply-filter', '');
+}
 
 const departmentHeads = computed(() => {
   return (props.users || []).filter((u) => u.role === 'DEPARTMENT_HEAD');

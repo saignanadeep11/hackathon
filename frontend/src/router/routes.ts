@@ -19,10 +19,19 @@ const routes: RouteRecordRaw[] = [
       { path: 'dashboard', component: () => import('src/features/dashboard/ui/DashboardPage.vue') },
       { path: 'assets', component: () => import('src/features/assets/ui/AssetDirectory.vue') },
       { path: 'org', component: () => import('src/features/organization/ui/OrgSetup.vue') },
-      { path: 'allocations', component: () => import('src/features/allocations/ui/AssetAllocation.vue') },
-      { path: 'my-assets', component: () => import('src/features/allocations/ui/AssetAllocation.vue') },
+      {
+        path: 'allocations',
+        component: () => import('src/features/allocations/ui/AssetAllocation.vue'),
+      },
+      {
+        path: 'my-assets',
+        component: () => import('src/features/allocations/ui/AssetAllocation.vue'),
+      },
       { path: 'bookings', component: () => import('src/features/bookings/ui/ResourceBooking.vue') },
-      { path: 'notifications', component: () => import('src/features/notifications/ui/NotificationsPage.vue') },
+      {
+        path: 'notifications',
+        component: () => import('src/features/notifications/ui/NotificationsPage.vue'),
+      },
     ],
   },
 

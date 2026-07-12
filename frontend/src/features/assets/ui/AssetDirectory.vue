@@ -4,7 +4,9 @@
     <div class="row items-center justify-between q-mb-lg">
       <div>
         <h1 class="text-h4 font-bold q-my-none text-white">Asset Management</h1>
-        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Manage assets and categories across your organization.</p>
+        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">
+          Manage assets and categories across your organization.
+        </p>
       </div>
       <q-btn
         v-if="canRegister && currentTab === 'assets'"
@@ -34,242 +36,269 @@
 
     <q-tab-panels v-model="currentTab" animated class="bg-transparent q-pa-none">
       <q-tab-panel name="assets" class="q-pa-none">
-    <q-card class="q-card--glass q-mb-lg q-pa-md">
-      <div class="row q-col-gutter-md items-center">
-        <!-- Search -->
-        <div class="col-12 col-md-3">
-          <q-input
-            v-model="filters.search"
-            placeholder="Search by tag, serial, name..."
-            filled
+        <q-card class="q-card--glass q-mb-lg q-pa-md">
+          <div class="row q-col-gutter-md items-center">
+            <!-- Search -->
+            <div class="col-12 col-md-3">
+              <q-input
+                v-model="filters.search"
+                placeholder="Search by tag, serial, name..."
+                filled
+                dark
+                dense
+                clearable
+              >
+                <template v-slot:prepend>
+                  <lucide-icon name="search" :size="18" class="text-grey-5" />
+                </template>
+              </q-input>
+            </div>
+
+            <!-- Status -->
+            <div class="col-12 col-sm-6 col-md-2">
+              <q-select
+                v-model="filters.status"
+                :options="statusOptions"
+                label="Status"
+                filled
+                dark
+                dense
+                clearable
+                emit-value
+                map-options
+              />
+            </div>
+
+            <!-- Category -->
+            <div class="col-12 col-sm-6 col-md-2">
+              <q-select
+                v-model="filters.category_id"
+                :options="categoryOptions"
+                label="Category"
+                filled
+                dark
+                dense
+                clearable
+                option-value="id"
+                option-label="name"
+                emit-value
+                map-options
+              />
+            </div>
+
+            <!-- Location -->
+            <div class="col-12 col-sm-6 col-md-2">
+              <q-input
+                v-model="filters.location"
+                placeholder="Filter by location..."
+                filled
+                dark
+                dense
+                clearable
+              >
+                <template v-slot:prepend>
+                  <lucide-icon name="map-pin" :size="18" class="text-grey-5" />
+                </template>
+              </q-input>
+            </div>
+
+            <!-- Bookable Toggle -->
+            <div class="col-12 col-sm-6 col-md-3 flex justify-end">
+              <q-toggle
+                v-model="filters.is_shared_bookable"
+                label="Shared Bookable Only"
+                dark
+                color="primary"
+                class="text-grey-4"
+              />
+            </div>
+          </div>
+        </q-card>
+
+        <!-- Assets List Table -->
+        <q-card class="q-card--glass">
+          <q-table
+            :rows="filteredAssets"
+            :columns="columns"
+            row-key="id"
+            class="q-table--glass text-white"
             dark
+            flat
             dense
-            clearable
+            :loading="loading"
+            :pagination="pagination"
+            no-data-label="No assets registered yet"
           >
-            <template v-slot:prepend>
-              <lucide-icon name="search" :size="18" class="text-grey-5" />
+            <template v-slot:body-cell-asset_tag="props">
+              <q-td
+                :props="props"
+                class="font-mono text-primary font-semibold cursor-pointer"
+                @click="viewDetails(props.row)"
+              >
+                {{ props.row.asset_tag }}
+              </q-td>
             </template>
-          </q-input>
-        </div>
 
-        <!-- Status -->
-        <div class="col-12 col-sm-6 col-md-2">
-          <q-select
-            v-model="filters.status"
-            :options="statusOptions"
-            label="Status"
-            filled
-            dark
-            dense
-            clearable
-            emit-value
-            map-options
-          />
-        </div>
-
-        <!-- Category -->
-        <div class="col-12 col-sm-6 col-md-2">
-          <q-select
-            v-model="filters.category_id"
-            :options="categoryOptions"
-            label="Category"
-            filled
-            dark
-            dense
-            clearable
-            option-value="id"
-            option-label="name"
-            emit-value
-            map-options
-          />
-        </div>
-
-        <!-- Location -->
-        <div class="col-12 col-sm-6 col-md-2">
-          <q-input
-            v-model="filters.location"
-            placeholder="Filter by location..."
-            filled
-            dark
-            dense
-            clearable
-          >
-            <template v-slot:prepend>
-              <lucide-icon name="map-pin" :size="18" class="text-grey-5" />
+            <template v-slot:body-cell-name="props">
+              <q-td
+                :props="props"
+                class="cursor-pointer font-semibold"
+                @click="viewDetails(props.row)"
+              >
+                {{ props.row.name }}
+              </q-td>
             </template>
-          </q-input>
-        </div>
 
-        <!-- Bookable Toggle -->
-        <div class="col-12 col-sm-6 col-md-3 flex justify-end">
-          <q-toggle
-            v-model="filters.is_shared_bookable"
-            label="Shared Bookable Only"
-            dark
-            color="primary"
-            class="text-grey-4"
-          />
-        </div>
-      </div>
-    </q-card>
+            <template v-slot:body-cell-status="props">
+              <q-td :props="props">
+                <asset-status-badge :status="props.row.status" />
+              </q-td>
+            </template>
 
-    <!-- Assets List Table -->
-    <q-card class="q-card--glass">
-      <q-table
-        :rows="filteredAssets"
-        :columns="columns"
-        row-key="id"
-        class="q-table--glass text-white"
-        dark
-        flat
-        dense
-        :loading="loading"
-        :pagination="pagination"
-        no-data-label="No assets registered yet"
-      >
-        <template v-slot:body-cell-asset_tag="props">
-          <q-td :props="props" class="font-mono text-primary font-semibold cursor-pointer" @click="viewDetails(props.row)">
-            {{ props.row.asset_tag }}
-          </q-td>
-        </template>
+            <template v-slot:body-cell-is_shared_bookable="props">
+              <q-td :props="props" class="text-center">
+                <q-icon
+                  v-if="props.row.is_shared_bookable"
+                  name="check_circle"
+                  color="positive"
+                  size="20px"
+                />
+                <q-icon v-else name="cancel" color="grey-7" size="20px" />
+              </q-td>
+            </template>
 
-        <template v-slot:body-cell-name="props">
-          <q-td :props="props" class="cursor-pointer font-semibold" @click="viewDetails(props.row)">
-            {{ props.row.name }}
-          </q-td>
-        </template>
+            <template v-slot:body-cell-acquisition_cost="props">
+              <q-td :props="props">
+                ${{
+                  Number(props.row.acquisition_cost).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                }}
+              </q-td>
+            </template>
 
-        <template v-slot:body-cell-status="props">
-          <q-td :props="props">
-            <asset-status-badge :status="props.row.status" />
-          </q-td>
-        </template>
+            <template v-slot:body-cell-actions="props">
+              <q-td :props="props" class="q-gutter-x-sm text-right">
+                <q-btn flat round dense color="primary" @click="viewDetails(props.row)">
+                  <lucide-icon name="eye" :size="16" />
+                  <q-tooltip>View Details & History</q-tooltip>
+                </q-btn>
+              </q-td>
+            </template>
+          </q-table>
+        </q-card>
 
-        <template v-slot:body-cell-is_shared_bookable="props">
-          <q-td :props="props" class="text-center">
-            <q-icon
-              v-if="props.row.is_shared_bookable"
-              name="check_circle"
-              color="positive"
-              size="20px"
-            />
-            <q-icon
-              v-else
-              name="cancel"
-              color="grey-7"
-              size="20px"
-            />
-          </q-td>
-        </template>
+        <!-- Side Detail Drawer / Dialog -->
+        <q-dialog v-model="detailsOpen" position="right" full-height>
+          <q-card class="details-drawer text-white" style="width: 480px; max-width: 90vw">
+            <q-card-section class="row items-center q-pb-md border-bottom-glass">
+              <div class="text-h6 font-semibold">Asset Specification</div>
+              <q-space />
+              <q-btn flat round dense icon="close" color="grey-5" @click="detailsOpen = false" />
+            </q-card-section>
 
-        <template v-slot:body-cell-acquisition_cost="props">
-          <q-td :props="props">
-            ${{ Number(props.row.acquisition_cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props" class="q-gutter-x-sm text-right">
-            <q-btn
-              flat
-              round
-              dense
-              color="primary"
-              @click="viewDetails(props.row)"
+            <q-card-section
+              v-if="selectedAsset"
+              class="scroll q-pa-md"
+              style="height: calc(100% - 70px)"
             >
-              <lucide-icon name="eye" :size="16" />
-              <q-tooltip>View Details & History</q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
-
-    <!-- Side Detail Drawer / Dialog -->
-    <q-dialog v-model="detailsOpen" position="right" full-height>
-      <q-card class="details-drawer text-white" style="width: 480px; max-width: 90vw;">
-        <q-card-section class="row items-center q-pb-md border-bottom-glass">
-          <div class="text-h6 font-semibold">Asset Specification</div>
-          <q-space />
-          <q-btn flat round dense icon="close" color="grey-5" @click="detailsOpen = false" />
-        </q-card-section>
-
-        <q-card-section v-if="selectedAsset" class="scroll q-pa-md" style="height: calc(100% - 70px);">
-          <!-- General Details -->
-          <div class="text-center q-mb-lg">
-            <q-avatar size="80px" color="rgba(255,255,255,0.05)" class="q-mb-sm border-glass">
-              <img v-if="selectedAsset.photo_url" :src="selectedAsset.photo_url" alt="Asset Photo" style="object-fit: cover;" />
-              <q-icon v-else name="computer" size="40px" color="primary" />
-            </q-avatar>
-            <div class="text-h6 font-bold">{{ selectedAsset.name }}</div>
-            <div class="text-subtitle2 text-primary font-mono">{{ selectedAsset.asset_tag }}</div>
-            <div class="q-mt-xs">
-              <asset-status-badge :status="selectedAsset.status" />
-            </div>
-          </div>
-
-          <!-- Specifications Grid -->
-          <div class="q-gutter-y-sm q-mb-lg">
-            <div class="spec-row">
-              <span class="spec-label">Serial Number</span>
-              <span class="spec-value font-mono">{{ selectedAsset.serial_number }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Category</span>
-              <span class="spec-value">{{ selectedAsset.category?.name }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Location</span>
-              <span class="spec-value">{{ selectedAsset.location }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Date Acquired</span>
-              <span class="spec-value">{{ selectedAsset.acquisition_date }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Acquisition Cost</span>
-              <span class="spec-value">${{ Number(selectedAsset.acquisition_cost).toLocaleString() }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Condition</span>
-              <span class="spec-value">{{ selectedAsset.condition }}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Bookable Resource</span>
-              <span class="spec-value">{{ selectedAsset.is_shared_bookable ? 'Yes' : 'No' }}</span>
-            </div>
-          </div>
-
-          <!-- Dynamic Custom Fields -->
-          <template v-if="parsedCustomFields && Object.keys(parsedCustomFields).length > 0">
-            <div class="text-subtitle2 text-primary q-mb-sm font-semibold">Custom Specifications</div>
-            <div class="q-gutter-y-sm q-mb-lg">
-              <div v-for="(val, key) in parsedCustomFields" :key="key" class="spec-row">
-                <span class="spec-label">{{ formatKey(String(key)) }}</span>
-                <span class="spec-value">{{ val }}</span>
+              <!-- General Details -->
+              <div class="text-center q-mb-lg">
+                <q-avatar size="80px" color="rgba(255,255,255,0.05)" class="q-mb-sm border-glass">
+                  <img
+                    v-if="selectedAsset.photo_url"
+                    :src="selectedAsset.photo_url"
+                    alt="Asset Photo"
+                    style="object-fit: cover"
+                  />
+                  <q-icon v-else name="computer" size="40px" color="primary" />
+                </q-avatar>
+                <div class="text-h6 font-bold">{{ selectedAsset.name }}</div>
+                <div class="text-subtitle2 text-primary font-mono">
+                  {{ selectedAsset.asset_tag }}
+                </div>
+                <div class="q-mt-xs">
+                  <asset-status-badge :status="selectedAsset.status" />
+                </div>
               </div>
-            </div>
-          </template>
 
-          <!-- History Tab -->
-          <div class="text-subtitle2 text-primary q-mb-sm font-semibold">Asset Lifespans & History</div>
-          <q-list class="history-timeline">
-            <q-item class="q-px-none">
-              <q-item-section avatar class="timeline-avatar">
-                <div class="timeline-dot bg-positive"></div>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-weight-bold text-white">Asset Registered</q-item-label>
-                <q-item-label caption class="text-grey-5">Initial registration status set to Available</q-item-label>
-              </q-item-section>
-              <q-item-section side top>
-                <q-item-label caption class="text-grey-6">{{ formatDate(String(selectedAsset.createdAt)) }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+              <!-- Specifications Grid -->
+              <div class="q-gutter-y-sm q-mb-lg">
+                <div class="spec-row">
+                  <span class="spec-label">Serial Number</span>
+                  <span class="spec-value font-mono">{{ selectedAsset.serial_number }}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Category</span>
+                  <span class="spec-value">{{ selectedAsset.category?.name }}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Location</span>
+                  <span class="spec-value">{{ selectedAsset.location }}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Date Acquired</span>
+                  <span class="spec-value">{{ selectedAsset.acquisition_date }}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Acquisition Cost</span>
+                  <span class="spec-value"
+                    >${{ Number(selectedAsset.acquisition_cost).toLocaleString() }}</span
+                  >
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Condition</span>
+                  <span class="spec-value">{{ selectedAsset.condition }}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-label">Bookable Resource</span>
+                  <span class="spec-value">{{
+                    selectedAsset.is_shared_bookable ? 'Yes' : 'No'
+                  }}</span>
+                </div>
+              </div>
+
+              <!-- Dynamic Custom Fields -->
+              <template v-if="parsedCustomFields && Object.keys(parsedCustomFields).length > 0">
+                <div class="text-subtitle2 text-primary q-mb-sm font-semibold">
+                  Custom Specifications
+                </div>
+                <div class="q-gutter-y-sm q-mb-lg">
+                  <div v-for="(val, key) in parsedCustomFields" :key="key" class="spec-row">
+                    <span class="spec-label">{{ formatKey(String(key)) }}</span>
+                    <span class="spec-value">{{ val }}</span>
+                  </div>
+                </div>
+              </template>
+
+              <!-- History Tab -->
+              <div class="text-subtitle2 text-primary q-mb-sm font-semibold">
+                Asset Lifespans & History
+              </div>
+              <q-list class="history-timeline">
+                <q-item class="q-px-none">
+                  <q-item-section avatar class="timeline-avatar">
+                    <div class="timeline-dot bg-positive"></div>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-weight-bold text-white"
+                      >Asset Registered</q-item-label
+                    >
+                    <q-item-label caption class="text-grey-5"
+                      >Initial registration status set to Available</q-item-label
+                    >
+                  </q-item-section>
+                  <q-item-section side top>
+                    <q-item-label caption class="text-grey-6">{{
+                      formatDate(String(selectedAsset.createdAt))
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
       </q-tab-panel>
 
       <q-tab-panel name="categories" class="q-pa-none" v-if="canManageCategories">
@@ -287,8 +316,12 @@ import { UserRole } from 'src/config/permissions';
 import { useAssets, useCategories } from '../api/useAssets';
 import AssetStatusBadge from './AssetStatusBadge.vue';
 import RegisterAssetModal from './RegisterAssetModal.vue';
-import CategoriesTab from '../../org/ui/CategoriesTab.vue';
-import { type GetAssetsQuery, type AssetFilterInput, type AssetStatus } from 'src/graphql/generated/graphql';
+import CategoriesTab from '../../organization/ui/components/CategoriesTab.vue';
+import {
+  type GetAssetsQuery,
+  type AssetFilterInput,
+  type AssetStatus,
+} from 'src/graphql/generated/graphql';
 
 type AssetType = GetAssetsQuery['assets'][number];
 
@@ -340,12 +373,41 @@ const pagination = ref({
 const columns = [
   { name: 'asset_tag', label: 'Tag', field: 'asset_tag', align: 'left' as const, sortable: true },
   { name: 'name', label: 'Name', field: 'name', align: 'left' as const, sortable: true },
-  { name: 'category', label: 'Category', field: (row: AssetType) => row.category?.name || 'N/A', align: 'left' as const, sortable: true },
+  {
+    name: 'category',
+    label: 'Category',
+    field: (row: AssetType) => row.category?.name || 'N/A',
+    align: 'left' as const,
+    sortable: true,
+  },
   { name: 'status', label: 'Status', field: 'status', align: 'left' as const, sortable: true },
-  { name: 'condition', label: 'Condition', field: 'condition', align: 'left' as const, sortable: true },
-  { name: 'location', label: 'Location', field: 'location', align: 'left' as const, sortable: true },
-  { name: 'is_shared_bookable', label: 'Bookable', field: 'is_shared_bookable', align: 'center' as const },
-  { name: 'acquisition_cost', label: 'Cost', field: 'acquisition_cost', align: 'right' as const, sortable: true },
+  {
+    name: 'condition',
+    label: 'Condition',
+    field: 'condition',
+    align: 'left' as const,
+    sortable: true,
+  },
+  {
+    name: 'location',
+    label: 'Location',
+    field: 'location',
+    align: 'left' as const,
+    sortable: true,
+  },
+  {
+    name: 'is_shared_bookable',
+    label: 'Bookable',
+    field: 'is_shared_bookable',
+    align: 'center' as const,
+  },
+  {
+    name: 'acquisition_cost',
+    label: 'Cost',
+    field: 'acquisition_cost',
+    align: 'right' as const,
+    sortable: true,
+  },
   { name: 'actions', label: '', field: '', align: 'right' as const },
 ];
 
@@ -370,7 +432,7 @@ const parsedCustomFields = computed(() => {
 });
 
 function formatKey(key: string): string {
-  return key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatDate(dateStr: string): string {

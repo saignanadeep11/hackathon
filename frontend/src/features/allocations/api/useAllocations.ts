@@ -26,7 +26,11 @@ export function useAllocations(filter: Ref<AllocationFilterInput> = ref({})) {
 }
 
 export function useRequestAllocation() {
-  const { mutate: requestMutate, loading: requestLoading, error: requestError } = useMutation(RequestAllocationDocument);
+  const {
+    mutate: requestMutate,
+    loading: requestLoading,
+    error: requestError,
+  } = useMutation(RequestAllocationDocument);
 
   async function requestAllocation(input: CreateAllocationInput) {
     const result = await requestMutate({ input });
@@ -41,7 +45,11 @@ export function useRequestAllocation() {
 }
 
 export function useApproveAllocation() {
-  const { mutate: approveMutate, loading: approveLoading, error: approveError } = useMutation(ApproveAllocationDocument);
+  const {
+    mutate: approveMutate,
+    loading: approveLoading,
+    error: approveError,
+  } = useMutation(ApproveAllocationDocument);
 
   async function approveAllocation(id: string) {
     const result = await approveMutate({ id });
@@ -56,7 +64,11 @@ export function useApproveAllocation() {
 }
 
 export function useRejectAllocation() {
-  const { mutate: rejectMutate, loading: rejectLoading, error: rejectError } = useMutation(RejectAllocationDocument);
+  const {
+    mutate: rejectMutate,
+    loading: rejectLoading,
+    error: rejectError,
+  } = useMutation(RejectAllocationDocument);
 
   async function rejectAllocation(id: string) {
     const result = await rejectMutate({ id });
@@ -71,7 +83,11 @@ export function useRejectAllocation() {
 }
 
 export function useReturnAsset() {
-  const { mutate: returnMutate, loading: returnLoading, error: returnError } = useMutation(ReturnAssetDocument);
+  const {
+    mutate: returnMutate,
+    loading: returnLoading,
+    error: returnError,
+  } = useMutation(ReturnAssetDocument);
 
   async function returnAsset(id: string, checkInNotes?: string) {
     const result = await returnMutate({ id, check_in_notes: checkInNotes });

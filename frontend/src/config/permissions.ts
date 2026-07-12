@@ -73,6 +73,12 @@ export const NAV_ITEMS: NavItem[] = [
     roles: [UserRole.ADMIN],
   },
   {
+    label: 'Activity Log',
+    icon: 'activity',
+    route: '/notifications',
+    roles: [], // All authenticated users
+  },
+  {
     label: 'Reports',
     icon: 'bar-chart-2',
     route: '/reports',
@@ -94,5 +100,6 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   '/maintenance': [],
   '/audits': [UserRole.ADMIN, UserRole.ASSET_MANAGER],
   '/org': [UserRole.ADMIN],
+  '/notifications': [],
   '/reports': [UserRole.ADMIN, UserRole.ASSET_MANAGER],
 };

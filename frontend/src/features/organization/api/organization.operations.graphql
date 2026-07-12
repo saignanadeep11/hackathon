@@ -1,0 +1,78 @@
+query GetDepartmentsPage(
+  $filter: DepartmentFilterInput
+  $first: Float
+  $after: String
+  $last: Float
+  $before: String
+) {
+  departmentsPage(
+    filter: $filter
+    first: $first
+    after: $after
+    last: $last
+    before: $before
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        status
+        head {
+          id
+          name
+          email
+        }
+        parent_department {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+query GetUsersPage(
+  $filter: UserFilterInput
+  $first: Float
+  $after: String
+  $last: Float
+  $before: String
+) {
+  usersPage(
+    filter: $filter
+    first: $first
+    after: $after
+    last: $last
+    before: $before
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        email
+        role
+        status
+        department {
+          id
+          name
+        }
+      }
+    }
+  }
+}

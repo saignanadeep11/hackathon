@@ -4,7 +4,9 @@
     <div class="row items-center justify-between q-mb-lg">
       <div>
         <h1 class="text-h4 font-bold q-my-none text-white">Asset Allocations</h1>
-        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Track, request, and manage asset assignments across the organization.</p>
+        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">
+          Track, request, and manage asset assignments across the organization.
+        </p>
       </div>
       <div class="q-gutter-x-sm">
         <q-btn
@@ -88,7 +90,11 @@
 
             <template v-slot:body-cell-expected_return_date="props">
               <q-td :props="props">
-                {{ props.row.expected_return_date ? new Date(props.row.expected_return_date).toLocaleDateString() : 'Indefinite' }}
+                {{
+                  props.row.expected_return_date
+                    ? new Date(props.row.expected_return_date).toLocaleDateString()
+                    : 'Indefinite'
+                }}
               </q-td>
             </template>
 
@@ -100,7 +106,7 @@
                   dense
                   square
                   class="text-uppercase text-weight-bold font-semibold"
-                  style="font-size: 10px;"
+                  style="font-size: 10px"
                 >
                   {{ props.row.status }}
                 </q-chip>
@@ -169,7 +175,11 @@
 
             <template v-slot:body-cell-expected_return_date="props">
               <q-td :props="props">
-                {{ props.row.expected_return_date ? new Date(props.row.expected_return_date).toLocaleDateString() : 'Indefinite' }}
+                {{
+                  props.row.expected_return_date
+                    ? new Date(props.row.expected_return_date).toLocaleDateString()
+                    : 'Indefinite'
+                }}
               </q-td>
             </template>
 
@@ -181,7 +191,7 @@
                   dense
                   square
                   class="text-uppercase text-weight-bold font-semibold"
-                  style="font-size: 10px;"
+                  style="font-size: 10px"
                 >
                   {{ props.row.status }}
                 </q-chip>
@@ -260,7 +270,11 @@
 
             <template v-slot:body-cell-expected_return_date="props">
               <q-td :props="props">
-                {{ props.row.expected_return_date ? new Date(props.row.expected_return_date).toLocaleDateString() : 'Indefinite' }}
+                {{
+                  props.row.expected_return_date
+                    ? new Date(props.row.expected_return_date).toLocaleDateString()
+                    : 'Indefinite'
+                }}
               </q-td>
             </template>
 
@@ -272,7 +286,7 @@
                   dense
                   square
                   class="text-uppercase text-weight-bold font-semibold"
-                  style="font-size: 10px;"
+                  style="font-size: 10px"
                 >
                   {{ props.row.status }}
                 </q-chip>
@@ -281,11 +295,17 @@
 
             <template v-slot:body-cell-actions="props">
               <q-td :props="props" class="q-gutter-x-sm text-right">
-                <span v-if="props.row.status === 'RETURNED' && props.row.check_in_notes" class="text-grey-5 text-caption">
+                <span
+                  v-if="props.row.status === 'RETURNED' && props.row.check_in_notes"
+                  class="text-grey-5 text-caption"
+                >
                   Notes: {{ props.row.check_in_notes }}
                 </span>
                 <q-btn
-                  v-else-if="(isManager || props.row.requested_by?.id === currentUser?.id) && (props.row.status === 'APPROVED' || props.row.status === 'ACTIVE')"
+                  v-else-if="
+                    (isManager || props.row.requested_by?.id === currentUser?.id) &&
+                    (props.row.status === 'APPROVED' || props.row.status === 'ACTIVE')
+                  "
                   color="accent"
                   no-caps
                   dense
@@ -307,7 +327,10 @@
 
     <!-- Direct Assign Dialog (Admin/Manager) -->
     <q-dialog v-model="assignModalOpen" persistent>
-      <q-card class="q-card--glass text-white q-pa-md" style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <q-card
+        class="q-card--glass text-white q-pa-md"
+        style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1)"
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 font-bold">Assign Asset Directly</div>
           <q-space />
@@ -326,7 +349,7 @@
               map-options
               emit-value
               required
-              :rules="[v => !!v || 'Asset is required']"
+              :rules="[(v) => !!v || 'Asset is required']"
             />
 
             <!-- Assignment Type Toggle -->
@@ -340,7 +363,7 @@
                 dense
                 :options="[
                   { label: 'User', value: 'user' },
-                  { label: 'Department', value: 'department' }
+                  { label: 'Department', value: 'department' },
                 ]"
               />
             </div>
@@ -356,7 +379,7 @@
               map-options
               emit-value
               required
-              :rules="[v => !!v || 'Employee is required']"
+              :rules="[(v) => !!v || 'Employee is required']"
             />
 
             <!-- Department Selector -->
@@ -370,7 +393,7 @@
               map-options
               emit-value
               required
-              :rules="[v => !!v || 'Department is required']"
+              :rules="[(v) => !!v || 'Department is required']"
             />
 
             <!-- Expected Return Date -->
@@ -384,7 +407,13 @@
 
             <div class="row justify-end q-mt-md">
               <q-btn label="Cancel" flat v-close-popup class="text-grey-4" />
-              <q-btn label="Assign Now" type="submit" color="primary" class="q-ml-sm" :loading="requestLoading" />
+              <q-btn
+                label="Assign Now"
+                type="submit"
+                color="primary"
+                class="q-ml-sm"
+                :loading="requestLoading"
+              />
             </div>
           </q-form>
         </q-card-section>
@@ -393,7 +422,10 @@
 
     <!-- Request Allocation Dialog (Employee) -->
     <q-dialog v-model="requestModalOpen" persistent>
-      <q-card class="q-card--glass text-white q-pa-md" style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <q-card
+        class="q-card--glass text-white q-pa-md"
+        style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1)"
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 font-bold">Request Asset Allocation</div>
           <q-space />
@@ -412,7 +444,7 @@
               map-options
               emit-value
               required
-              :rules="[v => !!v || 'Asset is required']"
+              :rules="[(v) => !!v || 'Asset is required']"
             />
 
             <!-- Expected Return Date -->
@@ -426,7 +458,13 @@
 
             <div class="row justify-end q-mt-md">
               <q-btn label="Cancel" flat v-close-popup class="text-grey-4" />
-              <q-btn label="Submit Request" type="submit" color="primary" class="q-ml-sm" :loading="requestLoading" />
+              <q-btn
+                label="Submit Request"
+                type="submit"
+                color="primary"
+                class="q-ml-sm"
+                :loading="requestLoading"
+              />
             </div>
           </q-form>
         </q-card-section>
@@ -435,7 +473,10 @@
 
     <!-- Return Asset Dialog -->
     <q-dialog v-model="returnModalOpen" persistent>
-      <q-card class="q-card--glass text-white q-pa-md" style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <q-card
+        class="q-card--glass text-white q-pa-md"
+        style="min-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1)"
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 font-bold">Return Asset</div>
           <q-space />
@@ -444,8 +485,11 @@
 
         <q-card-section>
           <q-form @submit="submitReturn" class="q-gutter-md">
-            <p class="text-grey-4 text-subtitle2">Are you sure you want to return this asset? Please capture its current condition details below.</p>
-            
+            <p class="text-grey-4 text-subtitle2">
+              Are you sure you want to return this asset? Please capture its current condition
+              details below.
+            </p>
+
             <q-input
               v-model="returnForm.check_in_notes"
               filled
@@ -454,12 +498,18 @@
               label="Condition & Return Notes"
               placeholder="e.g. Returned in perfect condition, power supply included."
               required
-              :rules="[v => !!v || 'Notes are required to log asset check-in']"
+              :rules="[(v) => !!v || 'Notes are required to log asset check-in']"
             />
 
             <div class="row justify-end q-mt-md">
               <q-btn label="Cancel" flat v-close-popup class="text-grey-4" />
-              <q-btn label="Confirm Return" type="submit" color="accent" class="q-ml-sm" :loading="returnLoading" />
+              <q-btn
+                label="Confirm Return"
+                type="submit"
+                color="accent"
+                class="q-ml-sm"
+                :loading="returnLoading"
+              />
             </div>
           </q-form>
         </q-card-section>
@@ -540,23 +590,54 @@ const allAllocationsRows = computed(() => {
 
 // Table columns
 const columns = [
-  { name: 'asset_tag', label: 'Asset Tag', field: (row: GetAllocationsQuery['allocations'][number]) => row.asset?.asset_tag, align: 'left' as const },
-  { name: 'asset_name', label: 'Asset Name', field: (row: GetAllocationsQuery['allocations'][number]) => row.asset?.name, align: 'left' as const },
-  { name: 'allocated_to', label: 'Allocated To', field: (row: GetAllocationsQuery['allocations'][number]) => row.allocated_to_user?.name || row.allocated_to_department?.name, align: 'left' as const },
-  { name: 'requested_by', label: 'Requested By', field: (row: GetAllocationsQuery['allocations'][number]) => row.requested_by?.name, align: 'left' as const },
-  { name: 'expected_return_date', label: 'Expected Return', field: 'expected_return_date', align: 'left' as const },
+  {
+    name: 'asset_tag',
+    label: 'Asset Tag',
+    field: (row: GetAllocationsQuery['allocations'][number]) => row.asset?.asset_tag,
+    align: 'left' as const,
+  },
+  {
+    name: 'asset_name',
+    label: 'Asset Name',
+    field: (row: GetAllocationsQuery['allocations'][number]) => row.asset?.name,
+    align: 'left' as const,
+  },
+  {
+    name: 'allocated_to',
+    label: 'Allocated To',
+    field: (row: GetAllocationsQuery['allocations'][number]) =>
+      row.allocated_to_user?.name || row.allocated_to_department?.name,
+    align: 'left' as const,
+  },
+  {
+    name: 'requested_by',
+    label: 'Requested By',
+    field: (row: GetAllocationsQuery['allocations'][number]) => row.requested_by?.name,
+    align: 'left' as const,
+  },
+  {
+    name: 'expected_return_date',
+    label: 'Expected Return',
+    field: 'expected_return_date',
+    align: 'left' as const,
+  },
   { name: 'status', label: 'Status', field: 'status', align: 'center' as const },
   { name: 'actions', label: 'Actions', field: 'actions', align: 'right' as const },
 ];
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'REQUESTED': return 'warning';
+    case 'REQUESTED':
+      return 'warning';
     case 'APPROVED':
-    case 'ACTIVE': return 'positive';
-    case 'RETURNED': return 'grey-7';
-    case 'REJECTED': return 'negative';
-    default: return 'primary';
+    case 'ACTIVE':
+      return 'positive';
+    case 'RETURNED':
+      return 'grey-7';
+    case 'REJECTED':
+      return 'negative';
+    default:
+      return 'primary';
   }
 };
 
@@ -591,18 +672,24 @@ async function submitDirectAssign() {
   try {
     const input = {
       asset_id: assignForm.value.asset_id,
-      allocated_to_user_id: assignForm.value.type === 'user' ? assignForm.value.allocated_to_user_id : undefined,
-      allocated_to_department_id: assignForm.value.type === 'department' ? assignForm.value.allocated_to_department_id : undefined,
-      expected_return_date: assignForm.value.expected_return_date ? new Date(assignForm.value.expected_return_date) : undefined,
+      allocated_to_user_id:
+        assignForm.value.type === 'user' ? assignForm.value.allocated_to_user_id : undefined,
+      allocated_to_department_id:
+        assignForm.value.type === 'department'
+          ? assignForm.value.allocated_to_department_id
+          : undefined,
+      expected_return_date: assignForm.value.expected_return_date
+        ? new Date(assignForm.value.expected_return_date)
+        : undefined,
     };
-    
+
     // First, request the allocation
     const req = await requestAllocation(input);
     if (req?.id) {
       // Direct assignment instantly approves it
       await approveAllocation(req.id);
     }
-    
+
     assignModalOpen.value = false;
     void refetch();
     void refetchAssets();
@@ -631,7 +718,9 @@ async function submitRequest() {
     const input = {
       asset_id: requestForm.value.asset_id,
       allocated_to_user_id: currentUser.value?.id,
-      expected_return_date: requestForm.value.expected_return_date ? new Date(requestForm.value.expected_return_date) : undefined,
+      expected_return_date: requestForm.value.expected_return_date
+        ? new Date(requestForm.value.expected_return_date)
+        : undefined,
     };
     await requestAllocation(input);
     requestModalOpen.value = false;

@@ -4,7 +4,7 @@ import {
   GetCategoriesDocument,
   CreateCategoryDocument,
   GetCategoriesPageDocument,
-  UpdateCategoryDocument
+  UpdateCategoryDocument,
 } from 'src/graphql/generated/graphql';
 import type { CategoryFilterInput } from 'src/graphql/generated/graphql';
 
@@ -21,7 +21,13 @@ export function useCategories() {
 }
 
 export function useCategoriesPage(
-  variables: { filter?: CategoryFilterInput; first?: number; after?: string; last?: number; before?: string } = {}
+  variables: {
+    filter?: CategoryFilterInput;
+    first?: number;
+    after?: string;
+    last?: number;
+    before?: string;
+  } = {},
 ) {
   // Use a reactive ref for variables so we can update them and trigger a refetch
   const variablesRef = ref(variables);
@@ -29,11 +35,11 @@ export function useCategoriesPage(
   const { result, loading, error, refetch, fetchMore } = useQuery(
     GetCategoriesPageDocument,
     variablesRef,
-    { fetchPolicy: 'cache-and-network' }
+    { fetchPolicy: 'cache-and-network' },
   );
 
   const pageResult = computed(() => result.value?.categoriesPage);
-  const categories = computed(() => pageResult.value?.edges.map(e => e.node) ?? []);
+  const categories = computed(() => pageResult.value?.edges.map((e) => e.node) ?? []);
   const pageInfo = computed(() => pageResult.value?.pageInfo);
   const totalCount = computed(() => pageResult.value?.totalCount ?? 0);
 
@@ -50,7 +56,11 @@ export function useCategoriesPage(
 }
 
 export function useCreateCategory() {
-  const { mutate: createMutate, loading: createLoading, error: createError } = useMutation(CreateCategoryDocument);
+  const {
+    mutate: createMutate,
+    loading: createLoading,
+    error: createError,
+  } = useMutation(CreateCategoryDocument);
 
   async function createCategory(name: string, customFieldsSchema: string) {
     const result = await createMutate({ name, customFieldsSchema });
@@ -65,7 +75,11 @@ export function useCreateCategory() {
 }
 
 export function useUpdateCategory() {
-  const { mutate: updateMutate, loading: updateLoading, error: updateError } = useMutation(UpdateCategoryDocument);
+  const {
+    mutate: updateMutate,
+    loading: updateLoading,
+    error: updateError,
+  } = useMutation(UpdateCategoryDocument);
 
   async function updateCategory(id: string, name?: string, customFieldsSchema?: string) {
     const result = await updateMutate({ id, name, customFieldsSchema });

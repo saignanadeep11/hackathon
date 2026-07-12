@@ -1,5 +1,12 @@
 import { useQuery, useMutation } from '@vue/apollo-composable';
 import { gql } from '@apollo/client/core';
+import { computed, ref } from 'vue';
+import {
+  GetDepartmentsPageDocument,
+  GetUsersPageDocument,
+  type DepartmentFilterInput,
+  type UserFilterInput,
+} from 'src/graphql/generated/graphql';
 
 export const GET_DEPARTMENTS = gql`
   query GetDepartments {
@@ -8,9 +15,11 @@ export const GET_DEPARTMENTS = gql`
       name
       status
       head {
+        id
         name
       }
       parent_department {
+        id
         name
       }
     }
@@ -81,6 +90,54 @@ export const CREATE_DEPARTMENT = gql`
   }
 `;
 
+export const UPDATE_DEPARTMENT = gql`
+  mutation UpdateDepartment(
+    $id: String!
+    $name: String
+    $head_id: String
+    $parent_department_id: String
+  ) {
+    updateDepartment(
+      id: $id
+      name: $name
+      head_id: $head_id
+      parent_department_id: $parent_department_id
+    ) {
+      id
+      name
+      head {
+        id
+        name
+      }
+      parent_department {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $id: String!
+    $role: UserRole
+    $status: GeneralStatus
+    $department_id: String
+  ) {
+    updateUser(id: $id, role: $role, status: $status, department_id: $department_id) {
+      id
+      name
+      email
+      role
+      status
+      department {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export function useOrganization() {
   const {
     result: departmentsResult,
@@ -122,6 +179,21 @@ export function useOrganization() {
     },
   );
 
+  const { mutate: updateDepartment, loading: updateDepartmentLoading } = useMutation(
+    UPDATE_DEPARTMENT,
+    {
+      update: () => {
+        void refetchDepartments();
+      },
+    },
+  );
+
+  const { mutate: updateUser, loading: updateUserLoading } = useMutation(UPDATE_USER, {
+    update: () => {
+      void refetchUsers();
+    },
+  });
+
   return {
     departmentsResult,
     departmentsLoading,
@@ -131,7 +203,79 @@ export function useOrganization() {
     promoteToDeptHead,
     createDepartment,
     createDepartmentLoading,
+    updateDepartment,
+    updateDepartmentLoading,
     updateDepartmentStatus,
     assignDepartmentHead,
+    updateUser,
+    updateUserLoading,
+  };
+}
+
+export function useDepartmentsPage(
+  variables: {
+    filter?: DepartmentFilterInput;
+    first?: number;
+    after?: string;
+    last?: number;
+    before?: string;
+  } = {},
+) {
+  const variablesRef = ref(variables);
+
+  const { result, loading, error, refetch, fetchMore } = useQuery(
+    GetDepartmentsPageDocument,
+    variablesRef,
+    { fetchPolicy: 'cache-and-network' },
+  );
+
+  const pageResult = computed(() => result.value?.departmentsPage);
+  const departments = computed(() => pageResult.value?.edges.map((e) => e.node) ?? []);
+  const pageInfo = computed(() => pageResult.value?.pageInfo);
+  const totalCount = computed(() => pageResult.value?.totalCount ?? 0);
+
+  return {
+    variables: variablesRef,
+    departments,
+    pageInfo,
+    totalCount,
+    loading,
+    error,
+    refetch,
+    fetchMore,
+  };
+}
+
+export function useUsersPage(
+  variables: {
+    filter?: UserFilterInput;
+    first?: number;
+    after?: string;
+    last?: number;
+    before?: string;
+  } = {},
+) {
+  const variablesRef = ref(variables);
+
+  const { result, loading, error, refetch, fetchMore } = useQuery(
+    GetUsersPageDocument,
+    variablesRef,
+    { fetchPolicy: 'cache-and-network' },
+  );
+
+  const pageResult = computed(() => result.value?.usersPage);
+  const users = computed(() => pageResult.value?.edges.map((e) => e.node) ?? []);
+  const pageInfo = computed(() => pageResult.value?.pageInfo);
+  const totalCount = computed(() => pageResult.value?.totalCount ?? 0);
+
+  return {
+    variables: variablesRef,
+    users,
+    pageInfo,
+    totalCount,
+    loading,
+    error,
+    refetch,
+    fetchMore,
   };
 }
