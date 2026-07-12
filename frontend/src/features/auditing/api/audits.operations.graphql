@@ -1,0 +1,93 @@
+query GetAuditCycles {
+  auditCycles {
+    id
+    name
+    start_date
+    end_date
+    status
+    target_department {
+      id
+      name
+    }
+    items {
+      id
+      verification_status
+      notes
+      asset {
+        id
+        asset_tag
+        name
+        status
+      }
+      auditor {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetMyAuditItems {
+  myAuditItems {
+    id
+    verification_status
+    notes
+    audit_cycle {
+      id
+      name
+      status
+    }
+    asset {
+      id
+      asset_tag
+      name
+      condition
+      location
+      status
+      category {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation CreateAuditCycle($input: CreateAuditCycleInput!) {
+  createAuditCycle(input: $input) {
+    id
+    name
+    status
+  }
+}
+
+mutation UpdateAuditItemStatus($itemId: String!, $status: AuditItemStatus!, $notes: String) {
+  updateAuditItemStatus(itemId: $itemId, status: $status, notes: $notes) {
+    id
+    verification_status
+    notes
+  }
+}
+
+mutation CloseAuditCycle($id: String!) {
+  closeAuditCycle(id: $id) {
+    id
+    status
+  }
+}
+
+query GetDepartmentsForAudit {
+  departments {
+    id
+    name
+    status
+  }
+}
+
+query GetUsersForAudit {
+  users {
+    id
+    name
+    email
+    role
+  }
+}

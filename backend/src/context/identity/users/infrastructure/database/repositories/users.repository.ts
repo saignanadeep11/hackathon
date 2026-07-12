@@ -30,7 +30,7 @@ export class UsersRepository extends BaseRepository<User, User, UserFilterInput>
     return this.repository.findOne({ where: { email } as any, relations: { department: true } });
   }
 
-  async fetchAllUsers(): Promise<User[]> {
+  async findAllUsers(): Promise<User[]> {
     return this.repository.find({ relations: { department: true } });
   }
 

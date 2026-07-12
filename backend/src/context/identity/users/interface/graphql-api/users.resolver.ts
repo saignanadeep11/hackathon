@@ -23,7 +23,7 @@ export class UsersResolver {
   @UseGuards(JwtAuthGuard)
   @Query(() => [User], { name: 'users' })
   async getUsers(): Promise<User[]> {
-    return this.usersService.findAll();
+    return this.usersService.findAllUsers();
   }
 
   @UseGuards(JwtAuthGuard)

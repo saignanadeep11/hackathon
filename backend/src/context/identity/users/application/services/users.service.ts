@@ -18,12 +18,12 @@ export class UsersService {
     return this.usersRepository.findByEmail(email);
   }
 
-  async create(user: Partial<User>): Promise<User> {
-    return this.usersRepository.createOne(user);
+  async findAllUsers(): Promise<User[]> {
+    return this.usersRepository.findAllUsers();
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.fetchAllUsers();
+  async create(user: Partial<User>): Promise<User> {
+    return this.usersRepository.createOne(user);
   }
 
   async listUsersPage(args: QueryArgs<UserFilterInput>): Promise<ConnectionResult<User>> {
