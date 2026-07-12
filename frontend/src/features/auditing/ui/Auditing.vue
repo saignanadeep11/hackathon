@@ -637,7 +637,7 @@ async function handleCreateCycle() {
       auditor_ids: newCycle.value.auditor_ids,
     });
     createModalOpen.value = false;
-    refetchCycles();
+    await refetchCycles();
     $q.notify({
       type: 'positive',
       message: 'Audit Cycle created successfully and assets assigned.',
@@ -671,8 +671,8 @@ async function handleUpdateItemStatus() {
       itemUpdate.value.notes
     );
     verifyModalOpen.value = false;
-    refetchItems();
-    refetchCycles();
+    await refetchItems();
+    await refetchCycles();
     $q.notify({
       type: 'positive',
       message: 'Asset verification status updated.',
@@ -692,6 +692,22 @@ function viewCycleDetails(cycle: AuditCycleRecord) {
   detailsModalOpen.value = true;
 }
 
+async function handleCloseCycle(cycleId: string) {
+  try {
+    await closeAuditCycle(cycleId);
+    await refetchCycles();
+    $q.notify({
+      type: 'positive',
+      message: 'Audit Cycle closed successfully.',
+    });
+  } catch (err: unknown) {
+    $q.notify({
+      type: 'negative',
+      message: (err instanceof Error ? err.message : null) || 'Failed to close audit cycle.',
+    });
+  }
+}
+
 function confirmCloseCycle(cycle: AuditCycleRecord) {
   $q.dialog({
     title: 'Close Audit Cycle',
@@ -699,20 +715,8 @@ function confirmCloseCycle(cycle: AuditCycleRecord) {
     cancel: true,
     persistent: true,
     dark: true,
-  }).onOk(async () => {
-    try {
-      await closeAuditCycle(cycle.id);
-      refetchCycles();
-      $q.notify({
-        type: 'positive',
-        message: 'Audit Cycle closed successfully.',
-      });
-    } catch (err: unknown) {
-      $q.notify({
-        type: 'negative',
-        message: (err instanceof Error ? err.message : null) || 'Failed to close audit cycle.',
-      });
-    }
+  }).onOk(() => {
+    void handleCloseCycle(cycle.id);
   });
 }
 </script>
