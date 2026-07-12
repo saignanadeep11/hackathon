@@ -78,12 +78,7 @@ export const NAV_ITEMS: NavItem[] = [
     route: '/notifications',
     roles: [], // All authenticated users
   },
-  {
-    label: 'Reports',
-    icon: 'bar-chart-2',
-    route: '/reports',
-    roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER],
-  },
+
 ];
 
 // ──────────────────────────────────────────────────────────────
