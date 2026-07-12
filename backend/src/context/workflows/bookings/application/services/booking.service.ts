@@ -4,8 +4,9 @@ import { Repository } from 'typeorm';
 import { ResourceBooking } from '../../infrastructure/database/models/resource-booking.entity';
 import { BookingRepository } from '../../infrastructure/database/repositories/booking.repository';
 import { Asset } from '../../../../asset-master/assets/infrastructure/database/models/asset.entity';
-import { BookingStatus } from '../../../../../common/enums/database.enums';
+import { BookingStatus, ActivityLogType } from '../../../../../common/enums/database.enums';
 import { CreateBookingInput } from '../dto/create-booking.input';
+import { ActivityLogService } from '../../../../auditing/activity-logs/application/services/activity-log.service';
 
 @Injectable()
 export class BookingService {
@@ -13,6 +14,7 @@ export class BookingService {
     private readonly bookingRepo: BookingRepository,
     @InjectRepository(Asset)
     private readonly assetRepository: Repository<Asset>,
+    private readonly activityLogService: ActivityLogService,
   ) {}
 
   async listBookings(filters: {
@@ -59,7 +61,16 @@ export class BookingService {
       status: BookingStatus.UPCOMING,
     };
 
-    return this.bookingRepo.createOne(bookingData);
+    const booking = await this.bookingRepo.createOne(bookingData);
+
+    await this.activityLogService.emitLog(
+      ActivityLogType.BOOKING,
+      `Resource "${asset.name}" booked from ${start.toISOString()} to ${end.toISOString()}`,
+      bookedByUserId,
+      booking.id,
+    );
+
+    return booking;
   }
 
   async cancelBooking(id: string): Promise<ResourceBooking> {
@@ -73,7 +84,16 @@ export class BookingService {
     }
 
     booking.status = BookingStatus.CANCELLED;
-    return this.bookingRepo.createOne(booking);
+    const cancelled = await this.bookingRepo.createOne(booking);
+
+    await this.activityLogService.emitLog(
+      ActivityLogType.BOOKING,
+      `Booking for asset cancelled`,
+      booking.booked_by_user_id,
+      cancelled.id,
+    );
+
+    return cancelled;
   }
 
   async listBookableAssets(): Promise<Asset[]> {

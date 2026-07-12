@@ -1,0 +1,21 @@
+query GetActivityLogs($filter: ActivityLogFilterInput) {
+  activityLogs(filter: $filter) {
+    id
+    type
+    message
+    is_read
+    created_at
+    actor {
+      id
+      name
+    }
+  }
+}
+
+query GetUnreadNotificationCount {
+  unreadNotificationCount
+}
+
+mutation MarkAllNotificationsRead {
+  markAllNotificationsRead
+}
