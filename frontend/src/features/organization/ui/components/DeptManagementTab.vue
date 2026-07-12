@@ -89,7 +89,7 @@ const props = defineProps<{
 const emit = defineEmits(['update-status', 'assign-head']);
 
 const departmentHeads = computed(() => {
-  return (props.users || []).filter((u: any) => u.role === 'DEPARTMENT_HEAD');
+  return (props.users || []).filter((u: Record<string, unknown>) => u.role === 'DEPARTMENT_HEAD');
 });
 
 const columns: QTableColumn[] = [
