@@ -1,0 +1,48 @@
+mutation CreateCategory($name: String!, $customFieldsSchema: String!) {
+  createCategory(name: $name, customFieldsSchema: $customFieldsSchema) {
+    id
+    name
+    custom_fields_schema
+  }
+}
+
+query GetCategoriesPage(
+  $filter: CategoryFilterInput
+  $first: Float
+  $after: String
+  $last: Float
+  $before: String
+) {
+  categoriesPage(
+    filter: $filter
+    first: $first
+    after: $after
+    last: $last
+    before: $before
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        custom_fields_schema
+      }
+    }
+  }
+}
+
+mutation UpdateCategory($id: String!, $name: String, $customFieldsSchema: String) {
+  updateCategory(id: $id, name: $name, customFieldsSchema: $customFieldsSchema) {
+    id
+    name
+    custom_fields_schema
+  }
+}
+

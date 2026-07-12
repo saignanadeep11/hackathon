@@ -67,7 +67,7 @@ export const NAV_ITEMS: NavItem[] = [
     roles: [UserRole.ADMIN, UserRole.ASSET_MANAGER],
   },
   {
-    label: 'Organization Setup',
+    label: 'Org & Categories',
     icon:  'building-2',
     route: '/org',
     roles: [UserRole.ADMIN],

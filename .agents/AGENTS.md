@@ -42,3 +42,6 @@ The frontend strictly groups code by feature domain rather than purely by file t
 - Make small, incremental commits (bit by bit). Avoid massive monolithic commits.
 - Never write placeholder code or "TODOs" unless explicitly requested. Provide fully functional implementations.
 - Use strict TypeScript. Don't use any keywords.
+
+## 5. Pagination & Filtering
+- **Frontend**: Always use cursor-based pagination combined with filters and OR-logic filters when fetching lists. This must align with the pagination and filtering capabilities provided by the backend's `BaseRepository`.

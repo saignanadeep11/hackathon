@@ -3,11 +3,11 @@
     <!-- Header -->
     <div class="row items-center justify-between q-mb-lg">
       <div>
-        <h1 class="text-h4 font-bold q-my-none text-white">Asset Directory</h1>
-        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Track, monitor, and register physical assets across departments.</p>
+        <h1 class="text-h4 font-bold q-my-none text-white">Asset Management</h1>
+        <p class="text-subtitle2 text-grey-5 q-mt-xs q-mb-none">Manage assets and categories across your organization.</p>
       </div>
       <q-btn
-        v-if="canRegister"
+        v-if="canRegister && currentTab === 'assets'"
         color="primary"
         no-caps
         class="bg-gradient-primary btn-shadow font-semibold"
@@ -18,7 +18,22 @@
       </q-btn>
     </div>
 
-    <!-- Filters Panel -->
+    <!-- Navigation Tabs -->
+    <q-tabs
+      v-model="currentTab"
+      dense
+      class="text-grey q-mb-md"
+      active-color="primary"
+      indicator-color="primary"
+      align="left"
+      narrow-indicator
+    >
+      <q-tab name="assets" label="Assets Directory" />
+      <q-tab name="categories" label="Asset Categories" v-if="canManageCategories" />
+    </q-tabs>
+
+    <q-tab-panels v-model="currentTab" animated class="bg-transparent q-pa-none">
+      <q-tab-panel name="assets" class="q-pa-none">
     <q-card class="q-card--glass q-mb-lg q-pa-md">
       <div class="row q-col-gutter-md items-center">
         <!-- Search -->
@@ -255,6 +270,12 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+      </q-tab-panel>
+
+      <q-tab-panel name="categories" class="q-pa-none" v-if="canManageCategories">
+        <categories-tab />
+      </q-tab-panel>
+    </q-tab-panels>
   </q-page>
 </template>
 
@@ -266,12 +287,20 @@ import { UserRole } from 'src/config/permissions';
 import { useAssets, useCategories } from '../api/useAssets';
 import AssetStatusBadge from './AssetStatusBadge.vue';
 import RegisterAssetModal from './RegisterAssetModal.vue';
+import CategoriesTab from '../../org/ui/CategoriesTab.vue';
 import { type GetAssetsQuery, type AssetFilterInput, type AssetStatus } from 'src/graphql/generated/graphql';
 
 type AssetType = GetAssetsQuery['assets'][number];
 
 const $q = useQuasar();
 const authStore = useAuthStore();
+
+const currentTab = ref('assets');
+
+const canManageCategories = computed(() => {
+  const role = authStore.currentUser?.role;
+  return role === UserRole.ADMIN || role === UserRole.ASSET_MANAGER;
+});
 
 const filters = ref<AssetFilterInput>({
   search: '',

@@ -14,10 +14,10 @@ export class AssetCategory {
   @Column()
   name: string;
 
-  // Uses JSON scalar for GraphQL (we can map it to any later)
+  // Uses JSON scalar for GraphQL (stored as text string to avoid object scalar errors)
   @Field(() => String)
-  @Column({ type: 'jsonb', default: {} })
-  custom_fields_schema: any;
+  @Column({ type: 'text', default: '' })
+  custom_fields_schema: string;
 
   @Field(() => [Asset], { nullable: true })
   @OneToMany(() => Asset, asset => asset.category)
