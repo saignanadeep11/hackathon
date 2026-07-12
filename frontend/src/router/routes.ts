@@ -22,6 +22,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'allocations', component: () => import('src/features/allocations/ui/AssetAllocation.vue') },
       { path: 'my-assets', component: () => import('src/features/allocations/ui/AssetAllocation.vue') },
       { path: 'bookings', component: () => import('src/features/bookings/ui/ResourceBooking.vue') },
+      { path: 'notifications', component: () => import('src/features/notifications/ui/NotificationsPage.vue') },
     ],
   },
 

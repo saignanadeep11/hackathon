@@ -1,0 +1,23 @@
+query GetDashboardMetrics {
+  dashboardMetrics {
+    totalAssets
+    availableAssets
+    allocatedAssets
+    underMaintenanceAssets
+    pendingAllocationRequests
+    overdueAllocations
+    upcomingBookingsToday
+    totalBookings
+    recentActivityLogs {
+      id
+      type
+      message
+      is_read
+      created_at
+      actor {
+        id
+        name
+      }
+    }
+  }
+}

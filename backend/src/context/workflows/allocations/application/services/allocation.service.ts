@@ -4,8 +4,9 @@ import { Repository } from 'typeorm';
 import { AssetAllocation } from '../../infrastructure/database/models/asset-allocation.entity';
 import { AllocationRepository } from '../../infrastructure/database/repositories/allocation.repository';
 import { Asset } from '../../../../asset-master/assets/infrastructure/database/models/asset.entity';
-import { AllocationStatus, AssetStatus } from '../../../../../common/enums/database.enums';
+import { AllocationStatus, AssetStatus, ActivityLogType } from '../../../../../common/enums/database.enums';
 import { CreateAllocationInput } from '../dto/create-allocation.input';
+import { ActivityLogService } from '../../../../auditing/activity-logs/application/services/activity-log.service';
 
 @Injectable()
 export class AllocationService {
@@ -13,6 +14,7 @@ export class AllocationService {
     private readonly allocationRepo: AllocationRepository,
     @InjectRepository(Asset)
     private readonly assetRepository: Repository<Asset>,
+    private readonly activityLogService: ActivityLogService,
   ) {}
 
   async listAllocations(filters: {
@@ -80,6 +82,14 @@ export class AllocationService {
     asset.status = AssetStatus.ALLOCATED;
     await this.assetRepository.save(asset);
 
+    await this.activityLogService.emitLog(
+      ActivityLogType.ALLOCATION,
+      `Asset "${asset.name}" approved and allocated to ${allocation.allocated_to_user_id ? 'user' : 'department'}`,
+      allocation.requested_by_id,
+      updatedAllocation.id,
+      allocation.allocated_to_user_id ?? undefined,
+    );
+
     return updatedAllocation;
   }
 
@@ -94,7 +104,16 @@ export class AllocationService {
     }
 
     allocation.status = AllocationStatus.REJECTED;
-    return this.allocationRepo.createOne(allocation);
+    const updated = await this.allocationRepo.createOne(allocation);
+
+    await this.activityLogService.emitLog(
+      ActivityLogType.ALLOCATION,
+      `Allocation request for asset rejected`,
+      allocation.requested_by_id,
+      updated.id,
+    );
+
+    return updated;
   }
 
   async returnAsset(id: string, checkInNotes?: string): Promise<AssetAllocation> {
@@ -123,6 +142,13 @@ export class AllocationService {
     // Reset asset to AVAILABLE
     asset.status = AssetStatus.AVAILABLE;
     await this.assetRepository.save(asset);
+
+    await this.activityLogService.emitLog(
+      ActivityLogType.ALLOCATION,
+      `Asset "${asset.name}" returned`,
+      allocation.requested_by_id,
+      updatedAllocation.id,
+    );
 
     return updatedAllocation;
   }

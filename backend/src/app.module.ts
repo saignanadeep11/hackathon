@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { IdentityModule } from './context/identity/identity.module';
 import { WorkflowsModule } from './context/workflows/workflows.module';
+import { AuditingModule } from './context/auditing/auditing.module';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -16,6 +17,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   imports: [
     IdentityModule,
     WorkflowsModule,
+    AuditingModule,
     ConfigModule.forRoot({
 
       validate: validateEnv,

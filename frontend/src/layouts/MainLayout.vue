@@ -45,10 +45,7 @@
           <lucide-icon name="menu" :size="20" />
         </q-btn>
         <q-space />
-        <q-btn flat round dense>
-          <lucide-icon name="bell" :size="20" />
-          <q-badge floating color="negative" rounded>3</q-badge>
-        </q-btn>
+        <NotificationBell />
       </q-toolbar>
     </q-header>
 
@@ -63,6 +60,7 @@ import { ref, computed } from 'vue';
 import { useAuthStore } from 'src/stores/auth.store';
 import { NAV_ITEMS, ROLE_LABELS } from 'src/config/permissions';
 import { useAuth } from 'src/features/auth/api/useAuth';
+import NotificationBell from 'src/features/notifications/ui/NotificationBell.vue';
 
 const drawerOpen = ref(true);
 const authStore = useAuthStore();
