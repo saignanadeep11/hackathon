@@ -31,7 +31,7 @@
 
     <RegisterAssetModal
       v-model="isModalOpen"
-      :categories="categoriesResult?.categories || []"
+      :categories="categories"
       :loading="createAssetLoading"
       @submit="handleCreateAsset"
     />
@@ -41,8 +41,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { QTableColumn } from 'quasar';
-import { useAssets } from '../api/useAssets';
+import { useAssets, useCategories, useRegisterAsset } from '../api/useAssets';
 import RegisterAssetModal from './components/RegisterAssetModal.vue';
+import type { RegisterAssetInput } from 'src/graphql/generated/graphql';
 
 interface AssetData {
   id: string;
@@ -54,8 +55,9 @@ interface AssetData {
   category?: { name: string };
 }
 
-const { assetsResult, assetsLoading, categoriesResult, createAsset, createAssetLoading } =
-  useAssets();
+const { assets, loading: assetsLoading, refetch } = useAssets();
+const { categories } = useCategories();
+const { registerAsset: createAsset, registerLoading: createAssetLoading } = useRegisterAsset();
 const isModalOpen = ref(false);
 
 const columns: QTableColumn[] = [
@@ -72,16 +74,16 @@ const columns: QTableColumn[] = [
   { name: 'status', label: 'Status', align: 'center', field: 'status' },
 ];
 
-const rows = computed(() => assetsResult.value?.assets || []);
+const rows = computed(() => assets.value);
 
-function handleCreateAsset(input: Record<string, unknown>) {
-  createAsset({ input })
-    .then(() => {
-      isModalOpen.value = false;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+async function handleCreateAsset(input: RegisterAssetInput) {
+  try {
+    await createAsset(input);
+    isModalOpen.value = false;
+    void refetch();
+  } catch (err: unknown) {
+    console.error(err);
+  }
 }
 </script>
 

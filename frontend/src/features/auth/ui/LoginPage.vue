@@ -223,10 +223,8 @@ const errorMessage = computed(() => {
 
 // Validation rules
 const emailRule = (v: string) => /.+@.+\..+/.test(v) || 'Valid email required';
-const emailRule = (v: string) => /.+@.+\..+/.test(v) || 'Valid email required';
 const requiredRule = (v: string) => !!v?.trim() || 'This field is required';
 const minLengthRule = (v: string) => v?.length >= 6 || 'Minimum 6 characters';
-const confirmRule = (v: string) => v === registerForm.value.password || 'Passwords do not match';
 const confirmRule = (v: string) => v === registerForm.value.password || 'Passwords do not match';
 
 async function handleLogin() {

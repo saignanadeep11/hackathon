@@ -72,6 +72,14 @@
 import { computed } from 'vue';
 import type { QTableColumn } from 'quasar';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department?: { name: string };
+}
+
 interface Department {
   id: string;
   name: string;
@@ -82,14 +90,14 @@ interface Department {
 
 const props = defineProps<{
   departments?: Department[];
-  users?: Record<string, unknown>[];
+  users?: User[];
   loading: boolean;
 }>();
 
 const emit = defineEmits(['update-status', 'assign-head']);
 
 const departmentHeads = computed(() => {
-  return (props.users || []).filter((u: any) => u.role === 'DEPARTMENT_HEAD');
+  return (props.users || []).filter((u) => u.role === 'DEPARTMENT_HEAD');
 });
 
 const columns: QTableColumn[] = [
